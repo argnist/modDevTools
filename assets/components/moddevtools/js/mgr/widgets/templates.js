@@ -13,10 +13,7 @@ MODx.on("ready",function() {
         id: 'moddevtools-template-snippets-tab',
         width: '100%',
         items: [{
-            html: _('moddevtools_intro_msg')
-            ,border: false
-            ,bodyCssClass: 'panel-desc'
-            ,bodyStyle: 'margin-bottom: 10px'
+            xtype: 'moddevtools-panel-snippets'
         }]
     });
     MODx.addTab("modx-template-tabs",{
@@ -24,10 +21,7 @@ MODx.on("ready",function() {
         id: 'moddevtools-template-resources-tab',
         width: '100%',
         items: [{
-            html: _('moddevtools_intro_msg')
-            ,border: false
-            ,bodyCssClass: 'panel-desc'
-            ,bodyStyle: 'margin-bottom: 10px'
+           // xtype: 'moddevtools-panel-resources'
         }]
     });
 });

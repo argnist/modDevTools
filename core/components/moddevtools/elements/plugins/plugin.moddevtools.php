@@ -28,7 +28,7 @@ switch($eventName) {
         break;
     case 'OnTempFormSave':
         $devTools->debug('Start OnTempFormSave');
-        $result = $devTools->parseContent($template);
+        $devTools->parseContent($template);
         break;
     case 'OnTVFormSave':
 
@@ -62,6 +62,7 @@ switch($eventName) {
 
 
 }
+
 if (isset($result) && $result === true)
     return;
 elseif (isset($result)) {

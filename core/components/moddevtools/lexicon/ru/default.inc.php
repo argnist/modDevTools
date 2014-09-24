@@ -17,3 +17,4 @@ $_lang['moddevtools_items_remove_confirm'] = 'Вы уверены, что хот
 $_lang['moddevtools_item_remove_confirm'] = 'Вы уверены, что хотите удалить этот Предмет?';
 $_lang['moddevtools_item_update'] = 'Изменить Предмет';*/
 $_lang['moddevtools_chunks_intro'] = 'Вы можете напрямую редактировать чанки, содержащиеся в шаблоне.';
+$_lang['moddevtools_snippets_intro'] = 'Вы можете напрямую редактировать сниппеты, содержащиеся в шаблоне.';

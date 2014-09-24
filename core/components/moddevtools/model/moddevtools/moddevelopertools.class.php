@@ -60,6 +60,7 @@ class modDeveloperTools {
 
         if ($class == 'Template') {
             $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.panel.js');
+            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/snippets.panel.js');
             $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.js');
         }
 
@@ -82,7 +83,7 @@ class modDeveloperTools {
 
         $parser = $this->modx->getParser();
         $tags = array();
-        $count = $parser->collectElementTags($object->get('content'), $tags);
+        $parser->collectElementTags($object->get('content'), $tags);
         foreach ($tags as $tag) {
             $tagName = $tag[1];
             if (substr($tagName,0,1) == '!') {
@@ -119,9 +120,10 @@ class modDeveloperTools {
                     $this->debug('Found snippet ' . $tagName . ' with propString ' . $tagPropString);
                     break;
             }
+            $tagName = trim($this->modx->stripTags($tagName));
 
             if ($object instanceof modTemplate) {
-                if ($class) {
+                if ($class && !empty($tagName)) {
                     $obj = $this->modx->getObject($class, array('name' => $tagName));
                     if ($obj) {
                         $this->debug('Object exists of class ' . $class);
@@ -141,13 +143,10 @@ class modDeveloperTools {
                         }
                     } else {
                         $this->debug('Object doesnt exist of class ' . $class);
-                        /* @TODO Выводить список с пустым содержимым, чтобы можно было создать прямо из вкладки?*/
                     }
-                    $object->set('tags', 'test');
                 }
             }
         }
-        $this->debug($count . print_r($tags,1));
     }
 
     public function debug($message) {
