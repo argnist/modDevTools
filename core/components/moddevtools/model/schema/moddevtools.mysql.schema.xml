@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="moddevtools" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="moddevtools" version="1.1">
+	<object class="modDevToolsLink" table="moddevtools_link" extends="xPDOSimpleObject">
+		<field key="parent" dbtype="int" precision="32" phptype="integer" null="false" default="" />
+		<field key="child" dbtype="int" precision="32" phptype="integer" null="false" default="" />
+        <field key="link_type" dbtype="varchar" precision="11" phptype="string" null="false" default="" />
+
+		<index alias="unique_link" name="unique_link" primary="false" unique="true" type="BTREE">
+			<column key="parent" length="" null="false" />
+            <column key="child" length="" null="false" />
+            <column key="link_type" length="" null="false" />
+		</index>
+	</object>
+</model>
