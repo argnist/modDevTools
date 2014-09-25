@@ -6,7 +6,7 @@ if ($object->xpdo) {
 
 	switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 		case xPDOTransport::ACTION_INSTALL:
-			$modelPath = $modx->getOption('moddevtools_core_path',null,$modx->getOption('core_path').'components/moddevtools/').'model/';
+			$modelPath = $modx->getOption('moddevtools_core_path', null, $modx->getOption('core_path') . 'components/moddevtools/') . 'model/';
 			$modx->addPackage('moddevtools', $modelPath);
 
 			$manager = $modx->getManager();

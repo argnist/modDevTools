@@ -15,10 +15,10 @@ foreach ($tmp as $k => $v) {
 	$setting = $modx->newObject('modSystemSetting');
 	$setting->fromArray(array_merge(
 		array(
-			'key' => 'moddevtools_'.$k,
+			'key' => 'moddevtools_' . $k,
 			'namespace' => PKG_NAME_LOWER,
 		), $v
-	),'',true,true);
+	), '', true, true);
 
 	$settings[] = $setting;
 }

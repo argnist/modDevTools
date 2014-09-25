@@ -7,7 +7,7 @@ define('PKG_NAME_LOWER', 'moddevtools');
 define('PKG_VERSION', '0.0.1');
 define('PKG_RELEASE', 'beta');
 define('PKG_AUTO_INSTALL', true);
-define('PKG_NAMESPACE_PATH', '{core_path}components/'.PKG_NAME_LOWER.'/');
+define('PKG_NAMESPACE_PATH', '{core_path}components/' . PKG_NAME_LOWER . '/');
 
 /* define paths */
 if (isset($_SERVER['MODX_BASE_PATH'])) {
@@ -50,6 +50,6 @@ define('BUILD_PLUGIN_STATIC', false);
 
 $BUILD_RESOLVERS = array(
 	'tables',
-//	'chunks',
+	//'chunks',
 	//'setup',
 );

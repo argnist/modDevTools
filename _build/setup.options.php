@@ -23,7 +23,6 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 			}
 			$chunks .= '</ul>';
 		}
-
 		break;
 
 	case xPDOTransport::ACTION_UNINSTALL: break;
