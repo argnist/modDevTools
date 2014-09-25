@@ -1,9 +1,9 @@
 <?php
 /**
- * The base class for modDeveloperTools.
+ * The base class for modDevTools.
  */
 
-class modDeveloperTools {
+class modDevTools {
 	/* @var modX $modx */
 	public $modx;
 
@@ -47,6 +47,7 @@ class modDeveloperTools {
     public function outputTab($class) {
         $this->modx->controller->addLexiconTopic('moddevtools:default');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/moddevtools.js');
+        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/misc/utils.js');
 
         $this->modx->controller->addHtml('
             <script type="text/javascript">
@@ -62,6 +63,7 @@ class modDeveloperTools {
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.panel.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/snippets.panel.js');
         if ($class == 'Template') {
+            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/resources.grid.js');
             $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.js');
         } else if ($class == 'Chunk') {
             $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.js');
@@ -69,6 +71,28 @@ class modDeveloperTools {
 
 
         return true;
+    }
+
+    public function clearLinks($link_type = false, $parent = false) {
+        $c = $this->modx->newQuery('modDevToolsLink');
+        if ($link_type) {
+            $c->where(array(
+                'link_type:LIKE' => $link_type . '-%'
+            ));
+        }
+
+        if ($parent) {
+            $c->where(array(
+                'parent' => $parent
+            ));
+        }
+        $links = $this->modx->getIterator('modDevToolsLink', $c);
+        /**
+         * @var modDevToolsLink $link
+         */
+        foreach ($links as $link) {
+            $link->remove();
+        }
     }
 
     /**
@@ -88,14 +112,7 @@ class modDeveloperTools {
             return;
         }
 
-        $links = $this->modx->getIterator('modDevToolsLink', array('parent' => $object->get('id')));
-        /**
-         * @var modDevToolsLink $link
-         */
-        foreach ($links as $link) {
-            $link->remove();
-        }
-
+        $this->clearLinks($objLink, $object->get('id'));
         $parser = $this->modx->getParser();
         $tags = array();
         $parser->collectElementTags($object->get('content'), $tags);

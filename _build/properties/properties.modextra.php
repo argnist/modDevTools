@@ -5,7 +5,7 @@ $properties = array();
 $tmp = array(
 	'tpl' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.modDeveloperTools.item',
+		'value' => 'tpl.modDevTools.item',
 	),
 	'sortby' => array(
 		'type' => 'textfield',

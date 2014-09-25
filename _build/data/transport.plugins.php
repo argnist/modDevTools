@@ -3,7 +3,7 @@
 $plugins = array();
 
 $tmp = array(
-	'modDeveloperTools' => array(
+	'modDevTools' => array(
 		'file' => 'moddevtools',
 		'description' => '',
 		'events' => array(

@@ -16,10 +16,10 @@ if ($object->xpdo) {
 		case xPDOTransport::ACTION_UPGRADE:
 			// Checking and installing required packages
 			$packages = array(
-				'pdoTools' => array(
+			/*	'pdoTools' => array(
 					'version_major' => 1,
 					'version_minor:>=' => 9,
-				)
+				)*/
 			);
 			foreach ($packages as $package => $options) {
 				$query = array('package_name' => $package);

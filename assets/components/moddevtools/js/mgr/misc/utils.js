@@ -1,11 +1,11 @@
-modDeveloperTools.utils.renderBoolean = function (value, props, row) {
+modDevTools.utils.renderBoolean = function (value, props, row) {
 
 	return value
 		? String.format('<span class="green">{0}</span>', _('yes'))
 		: String.format('<span class="red">{0}</span>', _('no'));
 }
 
-modDeveloperTools.utils.getMenu = function (actions, grid, selected) {
+modDevTools.utils.getMenu = function (actions, grid, selected) {
 	var menu = [];
 	var cls, icon, title, action = '';
 
@@ -52,7 +52,7 @@ modDeveloperTools.utils.getMenu = function (actions, grid, selected) {
 };
 
 
-modDeveloperTools.utils.renderActions = function (value, props, row) {
+modDevTools.utils.renderActions = function (value, props, row) {
 	var res = [];
 	var cls, icon, title, action, item = '';
 	for (var i in row.data.actions) {

@@ -3,7 +3,7 @@ var modDevTools = function(config) {
 	modDevTools.superclass.constructor.call(this,config);
 };
 Ext.extend(modDevTools,Ext.Component,{
-	page:{},window:{},grid:{},tree:{},panel:{},combo:{},config: {},view: {}
+	page:{},window:{},grid:{},tree:{},panel:{},combo:{},config: {},view: {},utils: {}
 });
 Ext.reg('moddevtools',modDevTools);
 

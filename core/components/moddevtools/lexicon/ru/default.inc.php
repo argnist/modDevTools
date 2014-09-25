@@ -2,7 +2,7 @@
 
 include_once 'setting.inc.php';
 
-$_lang['moddevtools'] = 'modDeveloperTools';
+$_lang['moddevtools'] = 'modDevTools';
 /*$_lang['moddevtools_menu_desc'] = 'Пример расширения для разработки.';
 $_lang['moddevtools_items'] = 'Предметы';
 $_lang['moddevtools_item_create'] = 'Создать предмет';

@@ -13,8 +13,8 @@ require_once $path . '/config.core.php';
 require_once MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php';
 /** @noinspection PhpIncludeInspection */
 require_once MODX_CONNECTORS_PATH . 'index.php';
-/** @var modDeveloperTools $modDevTools */
-$modDevTools = $modx->getService('moddevtools', 'modDeveloperTools', $modx->getOption('moddevtools_core_path', null, $modx->getOption('core_path') . 'components/moddevtools/') . 'model/moddevtools/');
+/** @var modDevTools $modDevTools */
+$modDevTools = $modx->getService('moddevtools', 'modDevTools', $modx->getOption('moddevtools_core_path', null, $modx->getOption('core_path') . 'components/moddevtools/') . 'model/moddevtools/');
 $modx->lexicon->load('moddevtools:default');
 
 // handle request

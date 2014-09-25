@@ -17,9 +17,9 @@
  */
 $path = $modx->getOption('moddevtools_core_path',null,$modx->getOption('core_path').'components/moddevtools/').'model/moddevtools/';
 /**
- * @var modDeveloperTools $devTools
+ * @var modDevTools $devTools
  */
-$devTools = $modx->getService('devTools','modDeveloperTools',$path, array('debug' => true));
+$devTools = $modx->getService('devTools','modDevTools',$path, array('debug' => true));
 $eventName = $modx->event->name;
 
 switch($eventName) {
@@ -70,6 +70,6 @@ switch($eventName) {
 if (isset($result) && $result === true)
     return;
 elseif (isset($result)) {
-    $modx->log(modX::LOG_LEVEL_ERROR,'[modDeveloperTools] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'undefined error' : $result);
+    $modx->log(modX::LOG_LEVEL_ERROR,'[modDevTools] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'undefined error' : $result);
     return;
 }

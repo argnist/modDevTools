@@ -1,4 +1,4 @@
-modDeveloperTools.panel.Home = function(config) {
+modDevTools.panel.Home = function(config) {
 	config = config || {};
 	Ext.apply(config,{
 		baseCls: 'modx-formpanel',
@@ -28,7 +28,7 @@ modDeveloperTools.panel.Home = function(config) {
 			}]
 		}]
 	});
-	modDeveloperTools.panel.Home.superclass.constructor.call(this, config);
+	modDevTools.panel.Home.superclass.constructor.call(this, config);
 };
-Ext.extend(modDeveloperTools.panel.Home, MODx.Panel);
-Ext.reg('moddevtools-panel-home', modDeveloperTools.panel.Home);
+Ext.extend(modDevTools.panel.Home, MODx.Panel);
+Ext.reg('moddevtools-panel-home', modDevTools.panel.Home);

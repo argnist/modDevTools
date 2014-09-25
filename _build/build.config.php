@@ -1,7 +1,7 @@
 <?php
 
 /* define package */
-define('PKG_NAME', 'modDeveloperTools');
+define('PKG_NAME', 'modDevTools');
 define('PKG_NAME_LOWER', 'moddevtools');
 
 define('PKG_VERSION', '0.0.1');

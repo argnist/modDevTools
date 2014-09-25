@@ -1,5 +1,5 @@
 --------------------
-modDeveloperTools
+modDevTools
 --------------------
 Author: John Doe <john@doe.com>
 --------------------
@@ -7,4 +7,4 @@ Author: John Doe <john@doe.com>
 A basic Extra for MODx Revolution.
 
 Feel free to suggest ideas/improvements/bugs on GitHub:
-http://github.com/username/modDeveloperTools/issues
+http://github.com/username/modDevTools/issues

@@ -2,9 +2,9 @@
 /**
  * Create an Item
  */
-class modDeveloperToolsItemCreateProcessor extends modObjectCreateProcessor {
-	public $objectType = 'modDeveloperToolsItem';
-	public $classKey = 'modDeveloperToolsItem';
+class modDevToolsItemCreateProcessor extends modObjectCreateProcessor {
+	public $objectType = 'modDevToolsItem';
+	public $classKey = 'modDevToolsItem';
 	public $languageTopics = array('moddevtools');
 	public $permission = 'new_document';
 
@@ -13,7 +13,7 @@ class modDeveloperToolsItemCreateProcessor extends modObjectCreateProcessor {
 	 * @return bool
 	 */
 	public function beforeSet() {
-		$alreadyExists = $this->modx->getObject('modDeveloperToolsItem', array(
+		$alreadyExists = $this->modx->getObject('modDevToolsItem', array(
 			'name' => $this->getProperty('name'),
 		));
 		if ($alreadyExists) {
@@ -25,4 +25,4 @@ class modDeveloperToolsItemCreateProcessor extends modObjectCreateProcessor {
 
 }
 
-return 'modDeveloperToolsItemCreateProcessor';
+return 'modDevToolsItemCreateProcessor';

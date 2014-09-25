@@ -4,7 +4,7 @@ modDevTools.panel.Chunks = function(config) {
         id: 'tools-panel-chunks',
         params: {
             action: 'mgr/chunk/getlist',
-            parent: config.ownerCt.parent,
+            parent: MODx.request.id,
             link_type: config.ownerCt.link_type
         },
         config: {

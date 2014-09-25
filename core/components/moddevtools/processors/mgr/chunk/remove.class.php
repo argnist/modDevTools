@@ -2,12 +2,12 @@
 /**
  * Remove an Item
  */
-class modDeveloperToolsItemRemoveProcessor extends modObjectRemoveProcessor {
+class modDevToolsItemRemoveProcessor extends modObjectRemoveProcessor {
 	public $checkRemovePermission = true;
-	public $objectType = 'modDeveloperToolsItem';
-	public $classKey = 'modDeveloperToolsItem';
+	public $objectType = 'modDevToolsItem';
+	public $classKey = 'modDevToolsItem';
 	public $languageTopics = array('moddevtools');
 
 }
 
-return 'modDeveloperToolsItemRemoveProcessor';
+return 'modDevToolsItemRemoveProcessor';

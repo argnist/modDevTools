@@ -1,21 +1,23 @@
-modExtra.grid.Items = function (config) {
+modDevTools.grid.Resources = function (config) {
 	config = config || {};
 	if (!config.id) {
-		config.id = 'modextra-grid-items';
+		config.id = 'moddevtools-grid-resources';
 	}
+    this.sm = new Ext.grid.CheckboxSelectionModel();
 	Ext.applyIf(config, {
-		url: modExtra.config.connector_url,
+		url: modDevTools.config.connector_url,
+        sm: this.sm,
 		fields: this.getFields(config),
 		columns: this.getColumns(config),
 		tbar: this.getTopBar(config),
-		sm: new Ext.grid.CheckboxSelectionModel(),
 		baseParams: {
-			action: 'mgr/item/getlist'
+			action: 'mgr/resource/getlist',
+            template: MODx.request.id
 		},
 		listeners: {
 			rowDblClick: function (grid, rowIndex, e) {
 				var row = grid.store.getAt(rowIndex);
-				this.updateItem(grid, e, row);
+				this.updateResource(grid, e, row);
 			}
 		},
 		viewConfig: {
@@ -26,36 +28,39 @@ modExtra.grid.Items = function (config) {
 			scrollOffset: 0,
 			getRowClass: function (rec, ri, p) {
 				return !rec.data.active
-					? 'modextra-row-disabled'
+					? 'moddevtools-row-disabled'
 					: '';
 			}
 		},
 		paging: true,
 		remoteSort: true,
-		autoHeight: true,
+		autoHeight: true
 	});
-	modExtra.grid.Items.superclass.constructor.call(this, config);
+	modDevTools.grid.Resources.superclass.constructor.call(this, config);
 
 	// Clear selection on grid refresh
-	this.store.on('load', function (a, b, c, d, e) {
-		this.getSelectionModel().clearSelections();
-	}, this);
+    this.on('render', function(){
+        this.store.on('load', function () {
+            this.config.sm.clearSelections();
+        }, this);
+    }, this);
+
 };
-Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
+Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
 	windows: {},
 
 	getMenu: function (grid, rowIndex) {
 		var ids = this._getSelectedIds();
 
 		var row = grid.getStore().getAt(rowIndex);
-		var menu = modExtra.utils.getMenu(row.data['actions'], this, ids);
+		var menu = modDevTools.utils.getMenu(row.data['actions'], this, ids);
 
 		this.addContextMenuItem(menu);
 	},
 
-	createItem: function (btn, e) {
+	createResource: function (btn, e) {
 		var w = MODx.load({
-			xtype: 'modextra-item-window-create',
+			xtype: 'moddevtools-resource-window-create',
 			id: Ext.id(),
 			listeners: {
 				success: {
@@ -70,7 +75,7 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 		w.show(e.target);
 	},
 
-	updateItem: function (btn, e, row) {
+	updateResource: function (btn, e, row) {
 		if (typeof(row) != 'undefined') {
 			this.menu.record = row.data;
 		}
@@ -82,14 +87,14 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 		MODx.Ajax.request({
 			url: this.config.url,
 			params: {
-				action: 'mgr/item/get',
+				action: 'mgr/resource/get',
 				id: id
 			},
 			listeners: {
 				success: {
 					fn: function (r) {
 						var w = MODx.load({
-							xtype: 'modextra-item-window-update',
+							xtype: 'moddevtools-resource-window-update',
 							id: Ext.id(),
 							record: r,
 							listeners: {
@@ -109,22 +114,22 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 		});
 	},
 
-	removeItem: function (act, btn, e) {
+	removeResource: function (act, btn, e) {
 		var ids = this._getSelectedIds();
 		if (!ids.length) {
 			return false;
 		}
 		MODx.msg.confirm({
 			title: ids.length > 1
-				? _('modextra_items_remove')
-				: _('modextra_item_remove'),
+				? _('moddevtools_resources_remove')
+				: _('moddevtools_resource_remove'),
 			text: ids.length > 1
-				? _('modextra_items_remove_confirm')
-				: _('modextra_item_remove_confirm'),
+				? _('moddevtools_resources_remove_confirm')
+				: _('moddevtools_resource_remove_confirm'),
 			url: this.config.url,
 			params: {
-				action: 'mgr/item/remove',
-				ids: Ext.util.JSON.encode(ids),
+				action: 'mgr/resource/remove',
+				ids: Ext.util.JSON.encode(ids)
 			},
 			listeners: {
 				success: {
@@ -137,7 +142,7 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 		return true;
 	},
 
-	disableItem: function (act, btn, e) {
+	disableResource: function (act, btn, e) {
 		var ids = this._getSelectedIds();
 		if (!ids.length) {
 			return false;
@@ -145,8 +150,8 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 		MODx.Ajax.request({
 			url: this.config.url,
 			params: {
-				action: 'mgr/item/disable',
-				ids: Ext.util.JSON.encode(ids),
+				action: 'mgr/resource/disable',
+				ids: Ext.util.JSON.encode(ids)
 			},
 			listeners: {
 				success: {
@@ -158,7 +163,7 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 		})
 	},
 
-	enableItem: function (act, btn, e) {
+	enableResource: function (act, btn, e) {
 		var ids = this._getSelectedIds();
 		if (!ids.length) {
 			return false;
@@ -166,8 +171,8 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 		MODx.Ajax.request({
 			url: this.config.url,
 			params: {
-				action: 'mgr/item/enable',
-				ids: Ext.util.JSON.encode(ids),
+				action: 'mgr/resource/enable',
+				ids: Ext.util.JSON.encode(ids)
 			},
 			listeners: {
 				success: {
@@ -180,35 +185,30 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 	},
 
 	getFields: function (config) {
-		return ['id', 'name', 'description', 'active', 'actions'];
+		return ['id', 'pagetitle', 'description', 'published', 'actions'];
 	},
 
 	getColumns: function (config) {
-		return [{
-			header: _('modextra_item_id'),
+		return [this.sm,{
+			header: _('id'),
 			dataIndex: 'id',
 			sortable: true,
 			width: 70
 		}, {
-			header: _('modextra_item_name'),
-			dataIndex: 'name',
+			header: _('pagetitle'),
+			dataIndex: 'pagetitle',
 			sortable: true,
-			width: 200,
+			width: 200
 		}, {
-			header: _('modextra_item_description'),
-			dataIndex: 'description',
-			sortable: false,
-			width: 250,
-		}, {
-			header: _('modextra_item_active'),
-			dataIndex: 'active',
-			renderer: modExtra.utils.renderBoolean,
+			header: _('published'),
+			dataIndex: 'published',
+			renderer: modDevTools.utils.renderBoolean,
 			sortable: true,
-			width: 100,
+			width: 100
 		}, {
-			header: _('modextra_grid_actions'),
+			header: _('moddevtools_grid_actions'),
 			dataIndex: 'actions',
-			renderer: modExtra.utils.renderActions,
+			renderer: modDevTools.utils.renderActions,
 			sortable: false,
 			width: 100,
 			id: 'actions'
@@ -216,16 +216,16 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 	},
 
 	getTopBar: function (config) {
-		return [{
-			text: '<i class="icon icon-plus">&nbsp;' + _('modextra_item_create'),
-			handler: this.createItem,
+		return;/* [{
+			text: '<i class="icon icon-plus">&nbsp;' + _('moddevtools_resource_create'),
+			handler: this.createResource,
 			scope: this
 		}, '->', {
 			xtype: 'textfield',
 			name: 'query',
 			width: 200,
 			id: config.id + '-search-field',
-			emptyText: _('modextra_grid_search'),
+			emptyText: _('moddevtools_grid_search'),
 			listeners: {
 				render: {
 					fn: function (tf) {
@@ -242,7 +242,7 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 			listeners: {
 				click: {fn: this._clearSearch, scope: this}
 			}
-		}];
+		}];*/
 	},
 
 	onClick: function (e) {
@@ -291,4 +291,4 @@ Ext.extend(modExtra.grid.Items, MODx.grid.Grid, {
 		this.refresh();
 	}
 });
-Ext.reg('modextra-grid-items', modExtra.grid.Items);
+Ext.reg('moddevtools-grid-resources', modDevTools.grid.Resources);

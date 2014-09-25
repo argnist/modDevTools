@@ -1,4 +1,4 @@
-modDeveloperTools.window.CreateItem = function (config) {
+modDevTools.window.CreateItem = function (config) {
 	config = config || {};
 	if (!config.id) {
 		config.id = 'moddevtools-item-window-create';
@@ -7,7 +7,7 @@ modDeveloperTools.window.CreateItem = function (config) {
 		title: _('moddevtools_item_create'),
 		width: 550,
 		autoHeight: true,
-		url: modDeveloperTools.config.connector_url,
+		url: modDevTools.config.connector_url,
 		action: 'mgr/item/create',
 		fields: this.getFields(config),
 		keys: [{
@@ -16,9 +16,9 @@ modDeveloperTools.window.CreateItem = function (config) {
 			}, scope: this
 		}]
 	});
-	modDeveloperTools.window.CreateItem.superclass.constructor.call(this, config);
+	modDevTools.window.CreateItem.superclass.constructor.call(this, config);
 };
-Ext.extend(modDeveloperTools.window.CreateItem, MODx.Window, {
+Ext.extend(modDevTools.window.CreateItem, MODx.Window, {
 
 	getFields: function (config) {
 		return [{
@@ -45,10 +45,10 @@ Ext.extend(modDeveloperTools.window.CreateItem, MODx.Window, {
 	}
 
 });
-Ext.reg('moddevtools-item-window-create', modDeveloperTools.window.CreateItem);
+Ext.reg('moddevtools-item-window-create', modDevTools.window.CreateItem);
 
 
-modDeveloperTools.window.UpdateItem = function (config) {
+modDevTools.window.UpdateItem = function (config) {
 	config = config || {};
 	if (!config.id) {
 		config.id = 'moddevtools-item-window-update';
@@ -57,7 +57,7 @@ modDeveloperTools.window.UpdateItem = function (config) {
 		title: _('moddevtools_item_update'),
 		width: 550,
 		autoHeight: true,
-		url: modDeveloperTools.config.connector_url,
+		url: modDevTools.config.connector_url,
 		action: 'mgr/item/update',
 		fields: this.getFields(config),
 		keys: [{
@@ -66,9 +66,9 @@ modDeveloperTools.window.UpdateItem = function (config) {
 			}, scope: this
 		}]
 	});
-	modDeveloperTools.window.UpdateItem.superclass.constructor.call(this, config);
+	modDevTools.window.UpdateItem.superclass.constructor.call(this, config);
 };
-Ext.extend(modDeveloperTools.window.UpdateItem, MODx.Window, {
+Ext.extend(modDevTools.window.UpdateItem, MODx.Window, {
 
 	getFields: function (config) {
 		return [{
@@ -98,4 +98,4 @@ Ext.extend(modDeveloperTools.window.UpdateItem, MODx.Window, {
 	}
 
 });
-Ext.reg('moddevtools-item-window-update', modDeveloperTools.window.UpdateItem);
+Ext.reg('moddevtools-item-window-update', modDevTools.window.UpdateItem);

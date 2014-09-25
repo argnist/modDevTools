@@ -4,7 +4,7 @@ modDevTools.panel.Snippets = function(config) {
         id: 'tools-panel-snippets',
         params: {
             action: 'mgr/snippet/getlist',
-            parent: config.ownerCt.parent,
+            parent: MODx.request.id,
             link_type: config.ownerCt.link_type
         },
         config: {

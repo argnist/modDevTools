@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Class modDeveloperToolsMainController
+ * Class modDevToolsMainController
  */
-abstract class modDeveloperToolsMainController extends modDeveloperToolsManagerController {
-	/** @var modDeveloperTools $modDeveloperTools */
-	public $modDeveloperTools;
+abstract class modDevToolsMainController extends modDevToolsManagerController {
+	/** @var modDevTools $modDevTools */
+	public $modDevTools;
 
 
 	/**
@@ -15,14 +15,14 @@ abstract class modDeveloperToolsMainController extends modDeveloperToolsManagerC
 		$corePath = $this->modx->getOption('moddevtools_core_path', null, $this->modx->getOption('core_path') . 'components/moddevtools/');
 		require_once $corePath . 'model/moddevtools/moddevtools.class.php';
 
-		$this->modDeveloperTools = new modDeveloperTools($this->modx);
+		$this->modDevTools = new modDevTools($this->modx);
 
-		$this->addCss($this->modDeveloperTools->config['cssUrl'] . 'mgr/main.css');
-		$this->addJavascript($this->modDeveloperTools->config['jsUrl'] . 'mgr/moddevtools.js');
+		$this->addCss($this->modDevTools->config['cssUrl'] . 'mgr/main.css');
+		$this->addJavascript($this->modDevTools->config['jsUrl'] . 'mgr/moddevtools.js');
 		$this->addHtml('<script type="text/javascript">
 		Ext.onReady(function() {
-			modDeveloperTools.config = ' . $this->modx->toJSON($this->modDeveloperTools->config) . ';
-			modDeveloperTools.config.connector_url = "' . $this->modDeveloperTools->config['connectorUrl'] . '";
+			modDevTools.config = ' . $this->modx->toJSON($this->modDevTools->config) . ';
+			modDevTools.config.connector_url = "' . $this->modDevTools->config['connectorUrl'] . '";
 		});
 		</script>');
 
@@ -50,7 +50,7 @@ abstract class modDeveloperToolsMainController extends modDeveloperToolsManagerC
 /**
  * Class IndexManagerController
  */
-class IndexManagerController extends modDeveloperToolsMainController {
+class IndexManagerController extends modDevToolsMainController {
 
 	/**
 	 * @return string

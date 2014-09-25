@@ -2,10 +2,10 @@
 /**
  * Get an Item
  */
-class modDeveloperToolsItemGetProcessor extends modObjectGetProcessor {
-	public $objectType = 'modDeveloperToolsItem';
-	public $classKey = 'modDeveloperToolsItem';
+class modDevToolsItemGetProcessor extends modObjectGetProcessor {
+	public $objectType = 'modDevToolsItem';
+	public $classKey = 'modDevToolsItem';
 	public $languageTopics = array('moddevtools:default');
 }
 
-return 'modDeveloperToolsItemGetProcessor';
+return 'modDevToolsItemGetProcessor';
