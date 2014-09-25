@@ -34,7 +34,8 @@ switch($eventName) {
 
         break;
     case 'OnChunkFormSave':
-
+        $devTools->debug('Start OnChunkFormSave');
+        $devTools->parseContent($chunk);
         break;
     case 'OnSnipFormSave':
 
@@ -55,6 +56,9 @@ switch($eventName) {
 
 
     case 'OnChunkFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD) {
+            $result = $devTools->outputTab('Chunk');
+        }
         break;
 
     case 'OnSnipFormPrerender':

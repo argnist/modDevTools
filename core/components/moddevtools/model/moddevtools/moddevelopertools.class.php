@@ -58,10 +58,13 @@ class modDeveloperTools {
             // ]]>
             </script>');
 
+        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/elements.panel.js');
+        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.panel.js');
+        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/snippets.panel.js');
         if ($class == 'Template') {
-            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.panel.js');
-            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/snippets.panel.js');
             $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.js');
+        } else if ($class == 'Chunk') {
+            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.js');
         }
 
 
@@ -72,6 +75,18 @@ class modDeveloperTools {
      * @param xPDOObject $object
      */
     public function parseContent(&$object) {
+
+        if ($object instanceof modTemplate) {
+            $objLink = 'temp';
+        } else if ($object instanceof modChunk) {
+            $objLink = 'chunk';
+        } else {
+            $objLink = false;
+        }
+
+        if ($objLink === false) {
+            return;
+        }
 
         $links = $this->modx->getIterator('modDevToolsLink', array('parent' => $object->get('id')));
         /**
@@ -122,28 +137,26 @@ class modDeveloperTools {
             }
             $tagName = trim($this->modx->stripTags($tagName));
 
-            if ($object instanceof modTemplate) {
-                if ($class && !empty($tagName)) {
-                    $obj = $this->modx->getObject($class, array('name' => $tagName));
-                    if ($obj) {
-                        $this->debug('Object exists of class ' . $class);
-                        $c = array(
-                            'parent' => $object->get('id'),
-                            'child' => $obj->get('id'),
-                            'link_type' => 'temp-' . $type
-                        );
-                        $link = $this->modx->getObject('modDevToolsLink', $c);
+            if ($class && !empty($tagName)) {
+                $obj = $this->modx->getObject($class, array('name' => $tagName));
+                if ($obj) {
+                    $this->debug('Object exists of class ' . $class);
+                    $c = array(
+                        'parent' => $object->get('id'),
+                        'child' => $obj->get('id'),
+                        'link_type' => $objLink . '-' . $type
+                    );
+                    $link = $this->modx->getObject('modDevToolsLink', $c);
 
-                        if (!$link) {
-                            $this->debug('Try to create link with criteria ' . print_r($c,1));
-                            $link = $this->modx->newObject('modDevToolsLink', $c);
-                            $link->save();
-                        } else {
-                            $this->debug('Link is already exists with criteria ' . print_r($c,1));
-                        }
+                    if (!$link) {
+                        $this->debug('Try to create link with criteria ' . print_r($c,1));
+                        $link = $this->modx->newObject('modDevToolsLink', $c);
+                        $link->save();
                     } else {
-                        $this->debug('Object doesnt exist of class ' . $class);
+                        $this->debug('Link is already exists with criteria ' . print_r($c,1));
                     }
+                } else {
+                    $this->debug('Object doesnt exist of class ' . $class);
                 }
             }
         }
