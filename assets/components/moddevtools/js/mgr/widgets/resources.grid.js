@@ -158,7 +158,6 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
 		}, {
             header: _('createdon'),
             dataIndex: 'createdon',
-            //renderer: modDevTools.utils.renderBoolean,
             sortable: true,
             width: 50
         }, {

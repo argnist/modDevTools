@@ -15,6 +15,7 @@ class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
         $c->where(array(
             'template' => $this->getProperty('template'),
         ));
+
 		return $c;
 	}
 
@@ -24,7 +25,24 @@ class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
      * @return array
      */
     public function prepareRow(xPDOObject $object) {
-        $array = $object->toArray();
+        $array = parent::prepareRow($object);
+        $allowedFields = array(
+            'id' => true,
+            'template' => true,
+            'pagetitle' => true,
+            'parent' => true,
+            'published' => true,
+            'deleted' => true,
+            'menuindex' => true,
+            'createdon' => true,
+            'publishedon' => true,
+        );
+        $array = array_intersect_key($array, $allowedFields);
+
+
+        $datetime = date_create($array['createdon']);
+        $array['createdon'] = date_format($datetime, $this->modx->getOption('manager_date_format') . ' ' . $this->modx->getOption('manager_time_format'));
+
         $array['actions'] = array();
 
         $array['actions'][] = array(
