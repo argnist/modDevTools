@@ -44,7 +44,7 @@ modDevTools.utils.getMenu = function (actions, grid, selected) {
 			text: String.format(
 				'<span class="{0}"><i class="x-menu-item-icon {1}"></i>{2}</span>',
 				cls, icon, title
-			),
+			)
 		});
 	}
 
@@ -70,7 +70,7 @@ modDevTools.utils.renderActions = function (value, props, row) {
 		title = a['title'] ? a['title'] : '';
 
 		item = String.format(
-			'<li class="{0}"><button class="btn btn-default {1}" action="{2}" title="{3}"></button></li>',
+			'<li class="{0}"><button class="btn btn-default {1}" action="{2}" title="{3}">&nbsp;{3}</button></li>',
 			cls, icon, action, title
 		);
 

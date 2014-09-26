@@ -18,6 +18,78 @@ class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
 		return $c;
 	}
 
+    /**
+     * @param xPDOObject $object
+     *
+     * @return array
+     */
+    public function prepareRow(xPDOObject $object) {
+        $array = $object->toArray();
+        $array['actions'] = array();
+
+        $array['actions'][] = array(
+            'cls' => '',
+            'icon' => 'icon icon-pencil-square-o',
+            'title' => $this->modx->lexicon('edit'),
+            'action' => 'editResource',
+            'button' => true,
+            'menu' => true,
+        );
+
+        $array['actions'][] = array(
+            'cls' => '',
+            'icon' => 'icon icon-wrench',
+            'title' => $this->modx->lexicon('moddevtools_template_change'),
+            'action' => 'changeTemplate',
+            'button' => true,
+            'menu' => true,
+        );
+
+        if (!$array['published']) {
+            $array['actions'][] = array(
+                'cls' => '',
+                'icon' => 'icon icon-power-off action-green',
+                'title' => $this->modx->lexicon('publish'),
+                'action' => 'publishResource',
+                'button' => true,
+                'menu' => true,
+            );
+        }
+        else {
+            $array['actions'][] = array(
+                'cls' => '',
+                'icon' => 'icon icon-power-off action-gray',
+                'title' => $this->modx->lexicon('unpublish'),
+                'action' => 'unpublishResource',
+                'button' => true,
+                'menu' => true,
+            );
+        }
+
+        if (!$array['deleted']) {
+            // Remove
+            $array['actions'][] = array(
+                'cls' => '',
+                'icon' => 'icon icon-trash-o action-red',
+                'title' => $this->modx->lexicon('remove'),
+                'action' => 'removeResource',
+                'button' => true,
+                'menu' => true,
+            );
+        } else {
+            $array['actions'][] = array(
+                'cls' => '',
+                'icon' => 'icon icon-trash-o action-green',
+                'title' => $this->modx->lexicon('undelete'),
+                'action' => 'undeleteResource',
+                'button' => true,
+                'menu' => true,
+            );
+        }
+
+        return $array;
+    }
+
 }
 
 return 'modDevToolsResourceGetListProcessor';

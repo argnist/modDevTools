@@ -8,4 +8,6 @@ Ext.extend(modDevTools,Ext.Component,{
 Ext.reg('moddevtools',modDevTools);
 
 modDevTools = new modDevTools();
-modDevTools.modx23 = typeof MODx.config.connector_url != 'undefined' ? true : false;
+if (typeof modDevTools.modx23 == 'undefined') {
+    modDevTools.modx23 = typeof MODx.config.connector_url != 'undefined' ? true : false;
+}

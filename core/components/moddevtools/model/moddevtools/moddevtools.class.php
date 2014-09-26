@@ -46,18 +46,26 @@ class modDevTools {
      */
     public function outputTab($class) {
         $this->modx->controller->addLexiconTopic('moddevtools:default');
+        $this->modx->controller->addCss($this->config['cssUrl'] . 'mgr/main.css');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/moddevtools.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/misc/utils.js');
+
+        $modx23 = !empty($this->modx->version) && version_compare($this->modx->version['full_version'], '2.3.0', '>=');
 
         $this->modx->controller->addHtml('
             <script type="text/javascript">
             // <![CDATA[
             modDevTools.config = {
-                assets_url: "'.$this->config['assetsUrl'].'"
-                ,connector_url: "'.$this->config['connectorUrl'].'"
+                assets_url: "' . $this->config['assetsUrl'] . '"
+                ,connector_url: "' . $this->config['connectorUrl'] . '"
                 };
+            modDevTools.modx23 = ' . (int)$modx23 . ';
             // ]]>
             </script>');
+
+        if (!$modx23) {
+            $this->modx->controller->addCss($this->config['cssUrl'] . 'mgr/bootstrap.buttons.css');
+        }
 
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/elements.panel.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.panel.js');
