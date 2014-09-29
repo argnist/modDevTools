@@ -81,6 +81,10 @@ class modDevTools {
         return true;
     }
 
+    /**
+     * @param bool|string $link_type
+     * @param bool|int $parent
+     */
     public function clearLinks($link_type = false, $parent = false) {
         $c = $this->modx->newQuery('modDevToolsLink');
         if ($link_type) {
@@ -104,27 +108,28 @@ class modDevTools {
     }
 
     /**
-     * @param xPDOObject $object
+     * @param modElement $object
+     * @return bool|string
      */
-    public function parseContent(&$object) {
-
+    public function getLinkParentType($object) {
         if ($object instanceof modTemplate) {
-            $objLink = 'temp';
+            return 'temp';
         } else if ($object instanceof modChunk) {
-            $objLink = 'chunk';
+            return 'chunk';
         } else {
-            $objLink = false;
+            return false;
         }
+    }
 
-        if ($objLink === false) {
-            return;
-        }
-
-        $this->clearLinks($objLink, $object->get('id'));
+    /**
+     * @param string $content
+     * @param array $tags
+     */
+    public function findTags($content, &$tags) {
         $parser = $this->modx->getParser();
-        $tags = array();
-        $parser->collectElementTags($object->get('content'), $tags);
-        foreach ($tags as $tag) {
+        $collectedTags = array();
+        $parser->collectElementTags($content, $collectedTags);
+        foreach ($collectedTags as $tag) {
             $tagName = $tag[1];
             if (substr($tagName,0,1) == '!') {
                 $tagName = substr($tagName, 1);
@@ -135,16 +140,39 @@ class modDevTools {
             $tagParts= xPDO :: escSplit('?', $tagName, '`', 2);
             $tagName= trim($tagParts[0]);
             $tagPropString= null;
+
             if (isset ($tagParts[1])) {
-                $tagPropString= trim($tagParts[1]);
+                $tagPropString = trim($tagParts[1]);
+                $this->findTags($tagPropString, $tags);
+                $properties = $parser->parsePropertyString($this->modx->stripTags($tagPropString));
+
+                foreach ($properties as $prop) {
+                    if (!empty($prop['value']) && !is_numeric($prop['value'])) {
+                        $tags[$prop['value']] = array(
+                            'name' => $prop['value'],
+                            'class' => 'modChunk',
+                        );
+                    }
+                }
+            } else {
+                $properties = null;
+            }
+
+            $tagName = trim($this->modx->stripTags($tagName));
+            if (in_array($token, array('$', '+', '~', '#', '%', '-', '*'))) {
+                $tagName = substr($tagName, 1);
+            }
+            if (empty($tagName)) {
+                continue;
             }
 
             switch ($token) {
                 case '$':
-                    $class = 'modChunk';
-                    $type = 'chunk';
-                    $tagName = substr($tagName,1);
-                    $this->debug('Found chunk ' . $tagName . ' with propString ' . $tagPropString);
+                    $tags[$tagName] = array(
+                        'name' => $tagName,
+                        'class' => 'modChunk',
+                    );
+                    $this->debug('Found chunk ' . $tagName . ' with properties ' . print_r($properties,1));
                     break;
                 case '+':
                 case '~':
@@ -152,41 +180,109 @@ class modDevTools {
                 case '%':
                 case '-':
                 case '*':
-                    $class = $type = false;
                     break;
                 default:
-                    $class = 'modSnippet';
-                    $type = 'snip';
-                    $this->debug('Found snippet ' . $tagName . ' with propString ' . $tagPropString);
-                    break;
-            }
-            $tagName = trim($this->modx->stripTags($tagName));
-
-            if ($class && !empty($tagName)) {
-                $obj = $this->modx->getObject($class, array('name' => $tagName));
-                if ($obj) {
-                    $this->debug('Object exists of class ' . $class);
-                    $c = array(
-                        'parent' => $object->get('id'),
-                        'child' => $obj->get('id'),
-                        'link_type' => $objLink . '-' . $type
+                    $tags[$tagName] = array(
+                        'name' => $tagName,
+                        'class' => 'modSnippet',
                     );
-                    $link = $this->modx->getObject('modDevToolsLink', $c);
-
-                    if (!$link) {
-                        $this->debug('Try to create link with criteria ' . print_r($c,1));
-                        $link = $this->modx->newObject('modDevToolsLink', $c);
-                        $link->save();
-                    } else {
-                        $this->debug('Link is already exists with criteria ' . print_r($c,1));
-                    }
-                } else {
-                    $this->debug('Object doesnt exist of class ' . $class);
-                }
+                    $this->debug('Found snippet ' . $tagName . ' with properties ' . print_r($properties,1));
+                    break;
             }
         }
     }
 
+    /**
+     * @param modElement $object
+     */
+    public function parseContent(&$object) {
+        $objLink = $this->getLinkParentType($object);
+        if ($objLink === false) {
+            return;
+        }
+
+        $this->clearLinks($objLink, $object->get('id'));
+
+        $tags = array();
+        $this->findTags($object->get('content'), $tags);
+        $this->debug('All found tags: ' . print_r($tags,1));
+        foreach ($tags as $tag) {
+            $this->findLink($object, $tag, $objLink);
+        }
+    }
+
+    /**
+     * @param xPDOObject $parent
+     * @param string $tag
+     * @param string $linkType
+     */
+    public function findLink($parent, $tag, $linkType) {
+        if (isset($tag['class'], $tag['name'])) {
+            switch ($tag['class']) {
+                case 'modSnippet':
+                    $type = 'snip';
+                    break;
+                case 'modChunk':
+                    $type = 'chunk';
+                    break;
+                default:
+                    return;
+                    break;
+            }
+            /**
+             * @var bool|xPDOObject $child
+             */
+            $child = $this->findObject($tag['class'], $tag['name']);
+            if ($child !== false) {
+                $this->createLink($parent, $child, $linkType . '-' . $type);
+            }
+        }
+    }
+
+    /**
+     * @param $parent xPDOObject
+     * @param $child xPDOObject
+     * @param $linkType
+     */
+    public function createLink($parent, $child, $linkType) {
+        $c = array(
+            'parent' => $parent->get('id'),
+            'child' => $child->get('id'),
+            'link_type' => $linkType,
+        );
+        $link = $this->modx->getObject('modDevToolsLink', $c);
+
+        if (!$link) {
+            $this->debug('Try to create link with criteria ' . print_r($c,1));
+            $link = $this->modx->newObject('modDevToolsLink', $c);
+            $link->save();
+        } else {
+            $this->debug('Link is already exists with criteria ' . print_r($c,1));
+        }
+    }
+
+    /**
+     * @param string $class
+     * @param string $name
+     * @return bool|null|object
+     */
+    public function findObject($class, $name) {
+        if (!empty($class) && !empty($name)) {
+            $obj = $this->modx->getObject($class, array('name' => $name));
+            if (!empty($obj)) {
+                $this->debug('Object exists of class ' . $class);
+                return $obj;
+            } else {
+                $this->debug('Object doesnt exist of class ' . $class);
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param string $message
+     */
     public function debug($message) {
         if ($this->config['debug']) {
             if ($message instanceof xPDOObject) {
