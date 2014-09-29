@@ -88,30 +88,34 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
         })
     },
 
-	unpublishResource: function (act, btn, e) {
+	unpublishResource: function (act, btn) {
         this.updateResource('unpublish');
 	},
 
-    publishResource: function (act, btn, e) {
+    publishResource: function (act, btn) {
         this.updateResource('publish');
     },
 
-    removeResource: function (act, btn, e) {
+    removeResource: function (act, btn) {
         this.updateResource('delete');
     },
 
-    undeleteResource: function (act, btn, e) {
+    undeleteResource: function (act, btn) {
         this.updateResource('undelete');
     },
 
-
-    editResource: function(act, btn, e) {
+    editResource: function(act, btn) {
         var id = this._getResId();
         if (!id) {
             return false;
         }
         MODx.loadPage((modDevTools.modx23 ? 'resource/update' : '?a=' + MODx.action['resource/update']) + '&id=' + id);
     },
+
+    previewResource: function(act, btn) {
+        window.open(this.menu.record.preview_url);
+    },
+
 
     changeTemplate: function(btn,e) {
         var cs = this.getSelectedAsList();
@@ -134,7 +138,7 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
     },
 
 	getFields: function (config) {
-		return ['id', 'pagetitle', 'description', 'published', 'createdon','actions'];
+		return ['id', 'pagetitle', 'description', 'published', 'createdon', 'actions', 'preview_url'];
 	},
 
 	getColumns: function (config) {
@@ -142,7 +146,7 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
 			header: _('id'),
 			dataIndex: 'id',
 			sortable: true,
-			width: 20
+			width: 15
 		}, {
 			header: _('pagetitle'),
 			dataIndex: 'pagetitle',
@@ -159,13 +163,13 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
             header: _('createdon'),
             dataIndex: 'createdon',
             sortable: true,
-            width: 50
+            width: 45
         }, {
 			header: _('moddevtools_grid_actions'),
 			dataIndex: 'actions',
 			renderer: modDevTools.utils.renderActions,
 			sortable: false,
-			width: 150,
+			width: 160,
 			id: 'actions'
 		}];
 	},

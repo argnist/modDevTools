@@ -19,7 +19,7 @@ $path = $modx->getOption('moddevtools_core_path',null,$modx->getOption('core_pat
 /**
  * @var modDevTools $devTools
  */
-$devTools = $modx->getService('devTools','modDevTools',$path, array('debug' => true));
+$devTools = $modx->getService('devTools','modDevTools',$path, array('debug' => false));
 $eventName = $modx->event->name;
 
 switch($eventName) {

@@ -137,42 +137,18 @@ class modDevTools {
 
             $token = substr($tagName, 0, 1);
 
-            $tagParts= xPDO :: escSplit('?', $tagName, '`', 2);
+            $tagParts= xPDO::escSplit('?', $tagName, '`', 2);
             $tagName= trim($tagParts[0]);
             $tagPropString= null;
-
-            if (isset ($tagParts[1])) {
-                $tagPropString = trim($tagParts[1]);
-                $this->findTags($tagPropString, $tags);
-                $properties = $parser->parsePropertyString($this->modx->stripTags($tagPropString));
-
-                foreach ($properties as $prop) {
-                    if (!empty($prop['value']) && !is_numeric($prop['value'])) {
-                        $tags[$prop['value']] = array(
-                            'name' => $prop['value'],
-                            'class' => 'modChunk',
-                        );
-                    }
-                }
-            } else {
-                $properties = null;
-            }
 
             $tagName = trim($this->modx->stripTags($tagName));
             if (in_array($token, array('$', '+', '~', '#', '%', '-', '*'))) {
                 $tagName = substr($tagName, 1);
             }
-            if (empty($tagName)) {
-                continue;
-            }
 
             switch ($token) {
                 case '$':
-                    $tags[$tagName] = array(
-                        'name' => $tagName,
-                        'class' => 'modChunk',
-                    );
-                    $this->debug('Found chunk ' . $tagName . ' with properties ' . print_r($properties,1));
+                    $class = 'modChunk';
                     break;
                 case '+':
                 case '~':
@@ -180,14 +156,47 @@ class modDevTools {
                 case '%':
                 case '-':
                 case '*':
+                    continue 2;
                     break;
                 default:
-                    $tags[$tagName] = array(
-                        'name' => $tagName,
-                        'class' => 'modSnippet',
-                    );
-                    $this->debug('Found snippet ' . $tagName . ' with properties ' . print_r($properties,1));
+                    $class = 'modSnippet';
                     break;
+            }
+
+            if (isset ($tagParts[1])) {
+                $tagPropString = trim($tagParts[1]);
+                $this->findTags($tagPropString, $tags);
+                $element = $parser->getElement($class, $tagName);
+                if ($element) {
+                    $properties = $element->getProperties($tagPropString);
+                } else {
+                    $properties = array();
+                }
+            } else {
+                $properties = array();
+            }
+
+            $this->debug('Found ' . $class . ' ' . $tagName . ' with properties ' . print_r($properties,1));
+
+            $tagName = $parser->realname($tagName);
+            if (empty($tagName)) {
+                continue;
+            }
+
+            $tags[$tagName] = array(
+                'name' => $tagName,
+                'class' => $class,
+            );
+
+            foreach ($properties as $property) {
+                $prop = trim($property);
+                if (!empty($prop) && !is_numeric($prop) && is_string($prop)) {
+                    $tags[$prop] = array(
+                        'name' => $prop,
+                        'class' => 'modChunk',
+                        'isProperty' => true,
+                    );
+                }
             }
         }
     }
@@ -196,6 +205,7 @@ class modDevTools {
      * @param modElement $object
      */
     public function parseContent(&$object) {
+        $t = microtime(true);
         $objLink = $this->getLinkParentType($object);
         if ($objLink === false) {
             return;
@@ -209,6 +219,7 @@ class modDevTools {
         foreach ($tags as $tag) {
             $this->findLink($object, $tag, $objLink);
         }
+        $this->debug('Total time: ' . (microtime(true) - $t));
     }
 
     /**
