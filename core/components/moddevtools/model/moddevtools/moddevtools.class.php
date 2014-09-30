@@ -72,12 +72,59 @@ class modDevTools {
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/snippets.panel.js');
         if ($class == 'Template') {
             $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/resources.grid.js');
-            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.js');
+            $this->modx->controller->addHtml("<script>
+                Ext.onReady(function() {
+                    MODx.addTab('modx-template-tabs',{
+                        title: _('chunks'),
+                        id: 'moddevtools-template-chunks-tab',
+                        width: '100%',
+                        link_type: 'temp-chunk',
+                        items: [{
+                            xtype: 'moddevtools-panel-chunks'
+                        }]
+                    });
+                    MODx.addTab('modx-template-tabs',{
+                        title: _('snippets'),
+                        id: 'moddevtools-template-snippets-tab',
+                        width: '100%',
+                        link_type: 'temp-snip',
+                        items: [{
+                            xtype: 'moddevtools-panel-snippets'
+                        }]
+                    });
+                    MODx.addTab('modx-template-tabs',{
+                        title: _('resources'),
+                        id: 'moddevtools-template-resources-tab',
+                        width: '100%',
+                        items: [{
+                            xtype: 'moddevtools-grid-resources',
+                            width: '100%'
+                        }]
+                    });
+                });</script>");
         } else if ($class == 'Chunk') {
-            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.js');
+            $this->modx->controller->addHtml("<script>
+                Ext.onReady(function() {
+                    MODx.addTab('modx-chunk-tabs',{
+                        title: _('chunks'),
+                        id: 'moddevtools-chunk-chunks-tab',
+                        width: '100%',
+                        link_type: 'chunk-chunk',
+                        items: [{
+                            xtype: 'moddevtools-panel-chunks'
+                        }]
+                    });
+                    MODx.addTab('modx-chunk-tabs',{
+                        title: _('snippets'),
+                        id: 'moddevtools-chunk-snippets-tab',
+                        width: '100%',
+                        link_type: 'chunk-snip',
+                        items: [{
+                            xtype: 'moddevtools-panel-snippets'
+                        }]
+                    });
+                });</script>");
         }
-
-
         return true;
     }
 
