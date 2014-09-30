@@ -1,1 +1,0 @@
-<div id="moddevtools-panel-home-div"></div>

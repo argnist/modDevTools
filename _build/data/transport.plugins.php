@@ -8,13 +8,13 @@ $tmp = array(
 		'description' => '',
 		'events' => array(
 			'OnTempFormPrerender' => array(),
-            'OnDocFormPrerender'=> array(),
+//            'OnDocFormPrerender'=> array(),
             'OnChunkFormPrerender' => array(),
-            'OnSnipFormPrerender' => array(),
+//            'OnSnipFormPrerender' => array(),
             'OnTempFormSave' => array(),
-            'OnDocFormSave'=> array(),
+//            'OnDocFormSave'=> array(),
             'OnChunkFormSave' => array(),
-            'OnSnipFormSave' => array(),
+//            'OnSnipFormSave' => array(),
 		)
 	)
 );

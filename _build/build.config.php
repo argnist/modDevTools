@@ -4,7 +4,7 @@
 define('PKG_NAME', 'modDevTools');
 define('PKG_NAME_LOWER', 'moddevtools');
 
-define('PKG_VERSION', '0.0.1');
+define('PKG_VERSION', '0.9.0');
 define('PKG_RELEASE', 'beta');
 define('PKG_AUTO_INSTALL', true);
 define('PKG_NAMESPACE_PATH', '{core_path}components/' . PKG_NAME_LOWER . '/');

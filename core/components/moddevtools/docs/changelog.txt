@@ -1,5 +1,5 @@
 Changelog for modDevTools.
 
-modDevTools 0.0.1
+modDevTools 0.9.0-beta
 ==============
 - Initial release.

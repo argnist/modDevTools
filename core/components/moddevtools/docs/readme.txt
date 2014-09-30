@@ -1,10 +1,10 @@
 --------------------
 modDevTools
 --------------------
-Author: John Doe <john@doe.com>
+Author: Kireev Vitaly <kireevvit@gmail.com>
 --------------------
 
-A basic Extra for MODx Revolution.
+Rapid site development helper for MODx Revolution.
 
 Feel free to suggest ideas/improvements/bugs on GitHub:
-http://github.com/username/modDevTools/issues
+http://github.com/argnist/modDevTools/issues
