@@ -103,8 +103,18 @@ class modDevTools {
                     });
                 });</script>");
         } else if ($class == 'Chunk') {
+            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.panel.js');
             $this->modx->controller->addHtml("<script>
                 Ext.onReady(function() {
+                    MODx.addTab('modx-chunk-tabs',{
+                        title: _('templates'),
+                        id: 'moddevtools-chunk-templates-tab',
+                        width: '100%',
+                        link_type: 'temp-chunk',
+                        items: [{
+                            xtype: 'moddevtools-panel-templates'
+                        }]
+                    });
                     MODx.addTab('modx-chunk-tabs',{
                         title: _('chunks'),
                         id: 'moddevtools-chunk-chunks-tab',

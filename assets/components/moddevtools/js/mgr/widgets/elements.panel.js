@@ -6,6 +6,7 @@ modDevTools.panel.Elements = function(config) {
         layout: 'auto',
         width: '100%',
         editors: this.editors,
+        parentPanel: config.ownerCt.ownerCt.ownerCt, //modx-panel-(chunk/template/...)
         items: [{
             html: this.getIntro(),
             border: false,
@@ -28,8 +29,8 @@ modDevTools.panel.Elements = function(config) {
     });
 
     this.getItems();
-    //modx-panel-(chunk/template/...)
-    config.ownerCt.ownerCt.ownerCt.on('success', function(data){
+
+    config.parentPanel.on('success', function(data){
         this.getItems();
     }, this);
 
@@ -79,7 +80,7 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                 record: r,
                                 enableKeyEvents: true,
                                 listeners: {
-                                    keyup: {fn:function(a,b,c){
+                                    keyup: {fn:function(){
                                         var button = Ext.getCmp('save-' + params.element + '-' + this.record.id);
                                         if (this.value !== this.getValue()) {
                                             if (button.disabled) {
@@ -90,7 +91,25 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                                 button.setDisabled(true);
                                             }
                                         }
-                                    }}
+                                    }},
+                                    afterrender: {fn:function(field) {
+                                        if (field.xtype == 'modx-texteditor') {
+                                            var editor = field.editor;
+                                            var name = this.parentPanel.record.name;
+                                            editor.findAll(name);
+
+                                            var ranges = this.highlightElements(editor, name);
+
+                                            if (ranges.length > 0) {
+                                                editor.gotoLine(ranges[0].end.row+1,ranges[0].end.column);
+                                            }
+
+                                            var _self = this;
+                                            editor.getSession().on('change', function(){
+                                                _self.highlightElements(editor, name);
+                                            });
+                                        }
+                                    }, scope: this}
                                 }
                             },this.loadProperties(r),{
                                 xtype: 'button',
@@ -100,17 +119,12 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                 input: params.element + '-editor-' + r.id,
                                 disabled: true,
                                 listeners: {
-                                    click: {fn:function(a,b,c) {
+                                    click: {fn:function(a) {
                                         var input = Ext.getCmp(a.input);
                                         this.setText(_('saving'));
                                         MODx.Ajax.request({
                                             url: modDevTools.modx23 ? MODx.config.connector_url : (MODx.config.connectors_url + 'element/' + params.element + '.php'),
-                                            params: {
-                                                action: modDevTools.modx23 ? 'element/' + params.element + '/update' : 'update',
-                                                id: input.record.id,
-                                                name: input.record.name,
-                                                snippet: input.getValue()
-                                            },
+                                            params: this.ownerCt.ownerCt.ownerCt.getUpdateParams(input),
                                             listeners: {
                                                 'success': {fn:function(r) {
                                                     if (r.success) {
@@ -139,5 +153,32 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                 },scope:this}
             }
         });
+    },
+
+    getUpdateParams: function(input) {
+        return {
+            action: modDevTools.modx23 ? 'element/' + this.config.config.element + '/update' : 'update',
+            id: input.record.id,
+            name: input.record.name,
+            snippet: input.getValue()
+        };
+    },
+
+    highlightElements: function(editor, name) {
+        var markers = editor.getSession().getMarkers(false);
+        for (var id in markers) {
+            if (markers[id].clazz.indexOf('ace_selected-word') === 0) {
+                editor.getSession().removeMarker(id);
+            }
+        }
+
+        editor.$search.set({needle:name});
+        var ranges = editor.$search.findAll(editor.session);
+
+        for (var i=0; i<ranges.length; i++) {
+             editor.getSession().addMarker(ranges[i],"ace_selected-word", "text");
+        }
+
+        return ranges;
     }
 });
