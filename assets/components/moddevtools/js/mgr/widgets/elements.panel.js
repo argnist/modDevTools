@@ -30,7 +30,16 @@ modDevTools.panel.Elements = function(config) {
 
     this.getItems();
 
-    config.parentPanel.on('success', function(data){
+    var tabs = config.ownerCt.ownerCt;
+    if (!tabs.isDevToolsEventSet) {
+        tabs.addListener('tabchange', function(){
+            var btn = Ext.getCmp('modx-abtn-save');
+            btn.setDisabled(false);
+        }, this);
+        tabs.isDevToolsEventSet = true;
+    }
+
+    config.parentPanel.on('success', function(){
         this.getItems();
     }, this);
 
@@ -52,7 +61,6 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
             autoDestroy: true,
             listeners: {
                 'load': {fn:function(opt,records,c){
-                    var items = [];
                     this.items.itemAt(1).removeAll();
                     for (var i = 0; i < records.length; i++) {
                         var r = records[i].data;
@@ -68,6 +76,14 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                     margin: '0 0 10px 0'
                                 }
                             },
+                            keys: [{
+                                key: "s",
+                                ctrl:true,
+                                scope: this,
+                                fn: function(){
+                                    this.focusedEditor.ownerCt.find('xtype', 'button')[0].fireEvent('click');
+                                }
+                            }],
                             autoHeight: true,
                             items: [{
                                 xtype: Ext.ComponentMgr.types['modx-texteditor'] ? 'modx-texteditor' : 'textarea',
@@ -92,6 +108,11 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                             }
                                         }
                                     }},
+                                    'focus': {fn:function(editor){
+                                        this.focusedEditor = editor;
+                                        var btn = Ext.getCmp('modx-abtn-save');
+                                        btn.setDisabled(true);
+                                    }, scope: this},
                                     afterrender: {fn:function(field) {
                                         if (field.xtype == 'modx-texteditor') {
                                             var editor = field.editor;
@@ -118,9 +139,14 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                 cls: 'primary-button',
                                 input: params.element + '-editor-' + r.id,
                                 disabled: true,
+                                keys: [{
+                                    key: MODx.config.keymap_save || 's'
+                                    ,ctrl: true
+                                }],
                                 listeners: {
-                                    click: {fn:function(a) {
-                                        var input = Ext.getCmp(a.input);
+                                    click: {fn:function() {
+                                        if (this.disabled) return false;
+                                        var input = Ext.getCmp(this.input);
                                         this.setText(_('saving'));
                                         MODx.Ajax.request({
                                             url: modDevTools.modx23 ? MODx.config.connector_url : (MODx.config.connectors_url + 'element/' + params.element + '.php'),
@@ -139,10 +165,9 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                 }
                             }],
                             listeners: {
-                                beforecollapse: function(a,b){
+                                'beforecollapse':{fn:function(a,b){
                                     return b !== true; // prevent collapse if not collapse directly on panel
-                                }
-                                ,scope: this
+                                },scope: this}
                             },
                             collapsed:false,
                             collapsible: true
