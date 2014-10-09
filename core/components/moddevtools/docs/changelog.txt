@@ -3,8 +3,9 @@ Changelog for modDevTools.
 
 modDevTools 0.9.5-rc1
 ==============
-- Список шаблонов на странице редактирования чанка / Template list on chunk page.
-- Подсветка имени чанка в коде шаблона из этого списка для редактора Ace / Name of the chunk is highlighted in template code for Ace
+- Список шаблонов на странице редактирования чанка / Template list on chunk page;
+- Подсветка имени чанка в коде шаблона из этого списка для редактора Ace / Name of the chunk is highlighted in template code for Ace;
+- Сохранение дочерних элементов в фокусе вместо родительских / Save child element in focus instead of parent;
 
 modDevTools 0.9.0-beta
 ==============
