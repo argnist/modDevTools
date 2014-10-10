@@ -348,6 +348,51 @@ class modDevTools {
         return false;
     }
 
+
+    public function getBreadCrumbs($resource, $mode) {
+        if (($mode === modSystemEvent::MODE_NEW) || !$resource) {
+            if (!isset($_GET['parent'])) {return;}
+            $resource = $this->modx->getObject('modResource', $_GET['parent']);
+            if (!$resource) {return;}
+        }
+        $context = $resource->get('context_key');
+        $resources = $this->modx->getParentIds($resource->get('id'), 100, array( 'context' => $context ));
+        if ($mode === modSystemEvent::MODE_NEW) {
+            $resources[] = $_GET['parent'];
+        }
+        $crumbs = '';
+        for ($i = count($resources)-1; $i >= 0; $i--) {
+            $resId = $resources[$i];
+            if ($resId == 0) {
+                $crumbs .= '<li style="padding:7px 7px 7px 0"><a class="x-tab-strip-text" href="/manager/index.php">' . $context . '</a><li style="padding:7px 7px 7px 0"><span>&rarr;</span></li>';
+                continue;
+            }
+            $parent = $this->modx->getObject('modResource', $resId);
+            if (!$parent) {break;}
+            $crumbs .= '<li style="padding:7px 7px 7px 0"><a class="x-tab-strip-text" href="/manager/index.php?a=30&id=' .
+                $parent->get('id') . '">' . $parent->get('pagetitle') .
+                '</a></li><li style="padding:7px"><span>&rarr;</span></li>';
+        }
+
+        $crumbs = '<ul class="x-tab-strip" style="max-width:60%;overflow:hidden">' . $crumbs . '</ul>';
+
+        $this->modx->controller->addHtml("<script>
+            Ext.onReady(function() {
+                var title = Ext.select('#modx-resource-header');
+                var pagetitleCmp = Ext.getCmp('modx-resource-pagetitle');
+                var pagetitle = pagetitleCmp.getValue();
+                if (pagetitle.length == 0) {
+                    pagetitle = _('new_document');
+                }
+                title.update('{$crumbs}' + '<h2>'+ pagetitle +'</h2>');
+                pagetitleCmp.on('keyup', function(){
+                    title.update('{$crumbs}' + '<h2>' + pagetitleCmp.getValue() + '&nbsp;</h2>');
+                });
+            });
+            </script>"
+        );
+    }
+
     /**
      * @param string $message
      */

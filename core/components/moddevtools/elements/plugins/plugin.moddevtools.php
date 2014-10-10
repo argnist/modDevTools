@@ -42,7 +42,10 @@ switch($eventName) {
         break;
     /* Add tabs */
     case 'OnDocFormPrerender':
-
+        if ($modx->event->name == 'OnDocFormPrerender') {
+            $devTools->getBreadCrumbs($resource, $mode);
+            return;
+        }
         break;
 
     case 'OnTempFormPrerender':
