@@ -3,7 +3,7 @@
 /**
  * Class modDevToolsMainController
  */
-abstract class modDevToolsMainController extends modDevToolsManagerController {
+abstract class modDevToolsMainController extends modExtraManagerController {
 	/** @var modDevTools $modDevTools */
 	public $modDevTools;
 

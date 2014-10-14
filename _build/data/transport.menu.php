@@ -3,12 +3,12 @@
 $menus = array();
 
 $tmp = array(
-/*	'moddevtools' => array(
+	'moddevtools' => array(
 		'description' => 'moddevtools_menu_desc',
 		'action' => array(
 			'controller' => 'index',
 		),
-	),*/
+	),
 );
 
 $i = 0;

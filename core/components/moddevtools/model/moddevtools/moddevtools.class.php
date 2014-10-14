@@ -393,6 +393,23 @@ class modDevTools {
         );
     }
 
+    public function getContent($content, $search, $offset = 0) {
+        $newContent = htmlentities($content);
+        $searchString = htmlentities($search);
+        $newContent = str_replace(array(' ', '  '), '&nbsp;', $newContent);
+        $searchString = str_replace(array(' ', '  '), '&nbsp;', $searchString);
+        $count = 0;
+        while (($pos = stripos($newContent, $searchString, $offset)) !== false) {
+            $class = ($count == 0) ? 'first-string' : 'found-string';
+            $this->modx->log(1, $count . ' ' . $pos . ' ' . $offset);
+            $newContent = substr($newContent, 0, $pos) . '<span class="' . $class . '">' . substr($newContent, $pos, strlen($searchString)) . '</span>' . substr($newContent, $pos+strlen($searchString));
+            $offset = $pos + 35;
+            $count++;
+        }
+
+        return nl2br($newContent);
+    }
+
     /**
      * @param string $message
      */

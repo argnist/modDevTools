@@ -63,6 +63,14 @@ a.x-menu-item .x-menu-item-text .icon {
 	color: inherit !important;
 }
 
+.first-string {
+    background: #f0ad4e;
+}
+
+.found-string {
+    background: yellow;
+}
+
 /*
 ul.moddevtools-row-actions .actions-menu {width: 40px;}
 ul.moddevtools-row-actions .actions-menu:after {content: " \f107";}
