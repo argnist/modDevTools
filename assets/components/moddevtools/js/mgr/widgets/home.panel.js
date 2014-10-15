@@ -4,6 +4,7 @@ modDevTools.panel.Home = function (config) {
         baseCls: 'modx-formpanel',
         layout: 'anchor',
         hideMode: 'offsets',
+        cls: 'container',
         items: [{
             html: '<h2>' + _('moddevtools') + '</h2>',
             cls: '',

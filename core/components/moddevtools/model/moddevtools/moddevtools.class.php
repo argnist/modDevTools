@@ -410,19 +410,29 @@ class modDevTools {
         );
     }
 
-    public function getContent($content, $search, $offset = 0) {
-        $newContent = htmlentities($content);
+    public function getSearchContent($content, $search, $offset = 0) {
+
+        $offsetString = substr($content, 0, $offset);
+        $offsetString = htmlentities($offsetString);
+        $offsetString = str_replace(array(' ', '  '), '&nbsp;', $offsetString);
+
         $searchString = htmlentities($search);
-        $newContent = str_replace(array(' ', '  '), '&nbsp;', $newContent);
         $searchString = str_replace(array(' ', '  '), '&nbsp;', $searchString);
-        $count = 0;
-        while (($pos = stripos($newContent, $searchString, $offset)) !== false) {
-            $class = ($count == 0) ? 'first-string' : 'found-string';
-            $this->modx->log(1, $count . ' ' . $pos . ' ' . $offset);
-            $newContent = substr($newContent, 0, $pos) . '<span class="' . $class . '">' . substr($newContent, $pos, strlen($searchString)) . '</span>' . substr($newContent, $pos+strlen($searchString));
-            $offset = $pos + 35;
-            $count++;
+
+        $newContent = substr($content, $offset);;
+        $newContent = htmlentities($newContent);
+        $newContent = str_replace(array(' ', '  '), '&nbsp;', $newContent);
+        $this->modx->log(1, $newContent);
+        $strings = explode($searchString, $newContent);
+        if (count($strings) > 1) {
+            for ($i = 0; $i < count($strings)-1; $i++) {
+                $strings[$i] .= '<span class="' . ($i == 0 ? 'first' : 'found') . '-string">';
+                $strings[$i+1] = '</span>' . $strings[$i+1];
+            }
         }
+        $newContent = implode($searchString, $strings);
+
+        $newContent = $offsetString . $newContent;
 
         return nl2br($newContent);
     }

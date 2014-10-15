@@ -71,6 +71,18 @@ a.x-menu-item .x-menu-item-text .icon {
     background: yellow;
 }
 
+.devtools-el-header {
+    background-color: #ececec;
+    padding: 10px;
+    margin: 10px 0 0 0;
+}
+
+.devtools-search-code {
+    border: 1px solid #ececec;
+    padding: 10px;
+    margin: 0 0 10px 0;
+}
+
 /*
 ul.moddevtools-row-actions .actions-menu {width: 40px;}
 ul.moddevtools-row-actions .actions-menu:after {content: " \f107";}

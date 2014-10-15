@@ -46,12 +46,15 @@ modDevTools.panel.SearchForm = function(config) {
                         var item = {
                             xtype: 'panel',
                             title: foundItems[i].class + ' ' + foundItems[i].name + ' (' + foundItems[i].id + ')',
+                            headerCfg: {
+                                cls: 'x-panel-header devtools-el-header'
+                            },
                             items: [{
                                 id: 'found-element-' + i,
                                 xtype: 'displayfield',
                                 value: foundItems[i].content,
-                                width: '100%',
-                                height: 'auto'
+                                height: 'auto',
+                                cls: 'devtools-search-code'
                             },{
                                 xtype: 'button',
                                 text: _('moddevtools_replace'),

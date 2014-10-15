@@ -22,7 +22,7 @@ class modDevToolsSearchProcessor extends modProcessor {
                 'id' => $object['id'],
                 'name' => $object[$nameField],
                 'class' => $class,
-                'content' => $this->modx->moddevtools->getContent($object['content'], $search),
+                'content' => $this->modx->moddevtools->getSearchContent($object['content'], $search),
                 'offset' => 0
             );
         }

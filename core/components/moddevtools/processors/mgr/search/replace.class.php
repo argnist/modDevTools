@@ -11,16 +11,25 @@ class modDevToolsReplaceProcessor extends modProcessor {
         $element = $this->modx->getObject($props['class'], $props['id']);
         $content = $element->getContent();
 
-        $offset = (int)$this->getProperty('offset', 0);
+        if ($props['all']) {
+            $content = str_replace($props['search'], $props['replace'], $content);
+            $offset = 0;
+        } else {
+            $offset = (int)$this->getProperty('offset', 0);
+            $offsetString = substr($content, 0, $offset);
+            $newContent = substr($content, $offset);
+            $strings = explode($props['search'], $newContent, 2);
+            $newContent = implode($props['replace'], $strings);
 
-        $off = 0;
-        while (($pos = stripos($content, $props['search'], $offset+$off)) !== false) {
-            $content = substr($content, 0, $pos) . $props['replace'] . substr($content, $pos+strlen($props['search']));
-            $off = $pos + strlen($props['replace']);
-            if (!$props['all']) {
-                break;
+            if (strpos($strings[1], $props['search']) === false) {
+                $offset = 0;
+            } else {
+                $offset = $offset + strlen($strings[0]) + strlen($props['replace']);
             }
+            $content = $offsetString . $newContent;
+
         }
+
         $element->setContent($content);
         $element->save();
 
@@ -28,13 +37,12 @@ class modDevToolsReplaceProcessor extends modProcessor {
         if (!isset($name)) {
             $name = $element->get('templatename');
         }
-        /* @TODO неправильное выделение после замены */
         $object = array(
             'id' => $element->get('id'),
             'name' => $name,
             'class' => $element->_alias,
-            'content' => $this->modx->moddevtools->getContent($content, $props['search'], $props['offset']),
-            'offset' => $pos + strlen($props['replace']) + 1,
+            'content' => $this->modx->moddevtools->getSearchContent($content, $props['search'], $offset),
+            'offset' => $offset,
         );
 
         return $this->success('', $object);
