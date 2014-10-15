@@ -360,33 +360,50 @@ class modDevTools {
         if ($mode === modSystemEvent::MODE_NEW) {
             $resources[] = $_GET['parent'];
         }
-        $crumbs = '';
+        $crumbs = array();
+        $root = $this->modx->toJSON(array(
+            'text' => $context,
+            'className' => 'first',
+            'root' => true,
+            'url' => '?'
+        ));
         for ($i = count($resources)-1; $i >= 0; $i--) {
             $resId = $resources[$i];
             if ($resId == 0) {
-                $crumbs .= '<li style="padding:7px 7px 7px 0"><a class="x-tab-strip-text" href="/manager/index.php">' . $context . '</a><li style="padding:7px 7px 7px 0"><span>&rarr;</span></li>';
                 continue;
             }
             $parent = $this->modx->getObject('modResource', $resId);
             if (!$parent) {break;}
-            $crumbs .= '<li style="padding:7px 7px 7px 0"><a class="x-tab-strip-text" href="/manager/index.php?a=30&id=' .
-                $parent->get('id') . '">' . $parent->get('pagetitle') .
-                '</a></li><li style="padding:7px"><span>&rarr;</span></li>';
+            $crumbs[] = array(
+                'text' => $parent->get('pagetitle'),
+			    'url' => '?a=30&id=' . $parent->get('id')
+            );
         }
 
-        $crumbs = '<ul class="x-tab-strip" style="max-width:60%;overflow:hidden">' . $crumbs . '</ul>';
+        $crumbs = $this->modx->toJSON($crumbs);
 
+        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/moddevtools.js');
+        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/breadcrumbs.panel.js');
         $this->modx->controller->addHtml("<script>
             Ext.onReady(function() {
-                var title = Ext.select('#modx-resource-header');
-                var pagetitleCmp = Ext.getCmp('modx-resource-pagetitle');
-                var pagetitle = pagetitleCmp.getValue();
-                if (pagetitle.length == 0) {
-                    pagetitle = _('new_document');
-                }
-                title.update('{$crumbs}' + '<h2>'+ pagetitle +'</h2>');
-                pagetitleCmp.on('keyup', function(){
-                    title.update('{$crumbs}' + '<h2>' + pagetitleCmp.getValue() + '&nbsp;</h2>');
+                var header = Ext.getCmp('modx-panel-resource');
+                header.insert(0, {
+                    xtype: 'moddevtools-breadcrumbs-panel'
+                    ,id: 'resource-breadcrumbs'
+                    ,desc: ''
+                    ,root : {$root}
+                });
+                header.doLayout();
+
+                var crumbCmp = Ext.getCmp('resource-breadcrumbs');
+                var bd = { trail : {$crumbs}};
+                bd.trail.push({text: crumbCmp.getPagetitle()})
+		        crumbCmp.updateDetail(bd);
+		        Ext.getCmp('modx-resource-header').hide();
+
+		        Ext.getCmp('modx-resource-pagetitle').on('keyup', function(){
+                    bd.trail[bd.trail.length-1] = {text: crumbCmp.getPagetitle()};
+                    crumbCmp._updatePanel(bd);
                 });
             });
             </script>"
