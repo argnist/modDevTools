@@ -356,10 +356,19 @@ class modDevTools {
             if (!$resource) {return;}
         }
         $context = $resource->get('context_key');
-        $resources = $this->modx->getParentIds($resource->get('id'), 100, array( 'context' => $context ));
+        if ($context != 'web') {
+            $this->modx->reloadContext($context);
+        }
+
+        /** @TODO вынести в настройки, когда они будут */
+        $limit = 3;
+        $resources = $this->modx->getParentIds($resource->get('id'), $limit, array( 'context' => $context ));
+
+
         if ($mode === modSystemEvent::MODE_NEW) {
             $resources[] = $_GET['parent'];
         }
+
         $crumbs = array();
         $root = $this->modx->toJSON(array(
             'text' => $context,
@@ -380,6 +389,12 @@ class modDevTools {
             );
         }
 
+        if (count($resources) == $limit) {
+            array_unshift($crumbs, array(
+                'text' => '...',
+            ));
+        }
+
         $crumbs = $this->modx->toJSON($crumbs);
 
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/moddevtools.js');
@@ -387,7 +402,7 @@ class modDevTools {
         $this->modx->controller->addHtml("<script>
             Ext.onReady(function() {
                 var header = Ext.getCmp('modx-panel-resource');
-                header.insert(0, {
+                header.insert(1, {
                     xtype: 'moddevtools-breadcrumbs-panel'
                     ,id: 'resource-breadcrumbs'
                     ,desc: ''
@@ -399,7 +414,7 @@ class modDevTools {
                 var bd = { trail : {$crumbs}};
                 bd.trail.push({text: crumbCmp.getPagetitle()})
 		        crumbCmp.updateDetail(bd);
-		        Ext.getCmp('modx-resource-header').hide();
+		       // Ext.getCmp('modx-resource-header').hide();
 
 		        Ext.getCmp('modx-resource-pagetitle').on('keyup', function(){
                     bd.trail[bd.trail.length-1] = {text: crumbCmp.getPagetitle()};

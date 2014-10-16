@@ -19,7 +19,7 @@ Ext.extend(modDevTools.BreadcrumbsPanel,MODx.BreadcrumbsPanel,{
         var target = e.getTarget();
         if (typeof target != "undefined") {
             var url = target.getAttribute('data-url');
-            if (typeof url != "undefined") {
+            if (url) {
                 MODx.loadPage(url);
             }
         }
