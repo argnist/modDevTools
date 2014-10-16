@@ -31,7 +31,8 @@ class modDevTools {
 			'templatesPath' => $corePath . 'elements/templates/',
 			'chunkSuffix' => '.chunk.tpl',
 			'snippetsPath' => $corePath . 'elements/snippets/',
-			'processorsPath' => $corePath . 'processors/'
+			'processorsPath' => $corePath . 'processors/',
+            'debug' => false,
 		), $config);
 
 		$this->modx->addPackage('moddevtools', $this->config['modelPath']);
@@ -437,7 +438,6 @@ class modDevTools {
         $newContent = substr($content, $offset);;
         $newContent = htmlentities($newContent);
         $newContent = str_replace(array(' ', '  '), '&nbsp;', $newContent);
-        $this->modx->log(1, $newContent);
         $strings = explode($searchString, $newContent);
         if (count($strings) > 1) {
             for ($i = 0; $i < count($strings)-1; $i++) {

@@ -1,15 +1,34 @@
 <?php
 
-class modDevToolsReplaceProcessor extends modProcessor {
+include_once MODX_CORE_PATH . 'model/modx/processors/element/update.class.php';
+class modDevToolsReplaceProcessor extends modElementUpdateProcessor {
 
-    public function process() {
+    public $nameField = 'name';
+    public $contentField = 'content';
 
+    public function run() {
+        $this->classKey = $this->getProperty('class');
+        switch ($this->classKey) {
+            case 'modChunk':
+                $this->object = 'chunk';
+                $this->permission = 'save_chunk';
+                $this->contentField = 'snippet';
+                break;
+            case 'modTemplate':
+                $this->object = 'template';
+                $this->permission = 'save_template';
+                $this->nameField = 'templatename';
+                break;
+            default: return false; break;
+        }
+
+        return parent::run();
+    }
+
+    public function beforeSet() {
         $props = $this->getProperties();
-        /**
-         * @var modElement $element
-         */
-        $element = $this->modx->getObject($props['class'], $props['id']);
-        $content = $element->getContent();
+
+        $content = $this->object->getContent();
 
         if ($props['all']) {
             $content = str_replace($props['search'], $props['replace'], $content);
@@ -27,27 +46,28 @@ class modDevToolsReplaceProcessor extends modProcessor {
                 $offset = $offset + strlen($strings[0]) + strlen($props['replace']);
             }
             $content = $offsetString . $newContent;
-
         }
+        $this->setProperty($this->contentField, $content);
+        $this->setProperty($this->nameField, $this->object->get($this->nameField));
+        $this->setProperty('offset', $offset);
 
-        $element->setContent($content);
-        $element->save();
+        return parent::beforeSet();
+    }
 
-        $name = $element->get('name');
-        if (!isset($name)) {
-            $name = $element->get('templatename');
-        }
+    public function cleanup() {
         $object = array(
-            'id' => $element->get('id'),
-            'name' => $name,
-            'class' => $element->_alias,
-            'content' => $this->modx->moddevtools->getSearchContent($content, $props['search'], $offset),
-            'offset' => $offset,
+            'id' => $this->object->get('id'),
+            'name' => $this->object->get($this->nameField),
+            'class' => $this->classKey,
+            'content' => $this->modx->moddevtools->getSearchContent(
+                $this->object->get($this->contentField),
+                $this->getProperty('search'),
+                $this->getProperty('offset')),
+            'offset' => $this->getProperty('offset'),
         );
 
         return $this->success('', $object);
     }
-
 
 }
 

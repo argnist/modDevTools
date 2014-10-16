@@ -40,4 +40,8 @@ class modDevToolsHomeManagerController extends modDevToolsMainController {
     public function getTemplateFile() {
         return $this->modDevTools->config['templatesPath'] . 'home.tpl';
     }
+
+    public function checkPermissions() {
+        return $this->modx->hasPermission('view_chunk') && $this->modx->hasPermission('view_template');
+    }
 }

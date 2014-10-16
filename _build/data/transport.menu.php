@@ -8,6 +8,7 @@ $tmp = array(
 		'action' => array(
 			'controller' => 'index',
 		),
+        'permissions' => 'view_chunk,view_template'
 	),
 );
 

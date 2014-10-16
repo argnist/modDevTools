@@ -4,7 +4,7 @@ modDevTools.panel.SearchForm = function(config) {
         cls: 'container form-with-labels',
         labelAlign: 'left',
         autoHeight: true,
-        layout: 'form',
+        anchor: '100%',
         saveMsg: _('search'),
         url: modDevTools.config.connector_url,
         errorReader: new Ext.data.JsonReader({
@@ -16,27 +16,48 @@ modDevTools.panel.SearchForm = function(config) {
             action: 'mgr/search/getlist'
         },
         items: [{
-            xtype: 'textfield',
-            id: 'search-string',
-            fieldLabel: _('moddevtools_text_to_find'),
-            allowBlank: false
-        },{
-            xtype: 'textfield',
-            id: 'replace-string',
-            fieldLabel: _('moddevtools_replace_with')
-        },{
-            xtype: 'button',
-            align: 'left',
-            text: _('moddevtools_find'),
-            handler: this.submit,
-            scope: this
-        },{
+            layout: 'column',
+            cls: 'x-toolbar',
+            style: {
+                backgroundColor: 'transparent'
+            },
+            defaults: {layout: 'form'},
+            items: [{
+                columnWidth: 0.4,
+                items: [{
+                    xtype: 'textfield',
+                    id: 'search-string',
+                    fieldLabel: _('moddevtools_text_to_find'),
+                    allowBlank: false,
+                    anchor: '100%'
+                }]
+            }, {
+                columnWidth: 0.4,
+                items: [{
+                    xtype: 'textfield',
+                    id: 'replace-string',
+                    fieldLabel: _('moddevtools_replace_with'),
+                    anchor: '100%'
+                }]
+            }, {
+                columnWidth: 0.2,
+                items: [{
+                    xtype: 'button',
+                    align: 'left',
+                    text: _('moddevtools_find'),
+                    handler: this.submit,
+                    scope: this,
+                    anchor: '100%'
+                }]
+            }]
+        }, {
             id: 'moddevtools-search-results'
         }],
         listeners: {
             success: {fn: function(response) {
                 var results = Ext.getCmp('moddevtools-search-results');
                 results.removeAll();
+
 
                 if (response.result.success && response.result.errors) {
                     var foundItems = response.result.errors;
@@ -83,9 +104,15 @@ modDevTools.panel.SearchForm = function(config) {
                         }
                         results.add(item);
                     }
-                    results.doLayout();
+                } else {
+                    results.add({
+                        html: '<h3>' + _('moddevtools_notfound') + '</h3>',
+                        style: {
+                            margin: '10px 0'
+                        }
+                    });
                 }
-
+                results.doLayout();
             },scope: this}
 
         }
