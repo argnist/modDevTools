@@ -1,5 +1,10 @@
 Changelog for modDevTools.
 
+modDevTools 0.9.8-rc2
+==============
+- Панель поиска и замены строк в элементах / Search and Replace panel for elements
+- Панель "Хлебные крошки" на странице редактирования ресурсов / BreadCrumbs panel for resource edit page
+- Исправление ошибки в логах при установке / Fix log messages while install
 
 modDevTools 0.9.5-rc1
 ==============

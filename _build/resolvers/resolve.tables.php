@@ -1,6 +1,7 @@
 <?php
 
 function parseAll($modx) {
+    $modx->setLogLevel(modX::LOG_LEVEL_WARN);
     $objects = $modx->getIterator('modTemplate');
     foreach ($objects as $object) {
         $modx->moddevtools->parseContent($object);
@@ -9,6 +10,7 @@ function parseAll($modx) {
     foreach ($objects as $object) {
         $modx->moddevtools->parseContent($object);
     }
+    $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 }
 
 if ($object->xpdo) {
