@@ -9,7 +9,8 @@ modDevTools.BreadcrumbsPanel = function(config) {
             +'<button type="button" data-url="{url}" class="controlBtn {[values.root ? \' root\' : \'\' ]}">{text}</button>'
             +'</tpl>'
             +'<tpl if="typeof url == \'undefined\'"><span class="text{[values.root ? \' root\' : \'\' ]}">{text}</span></tpl>'
-            +'</li></tpl></ul></div></tpl>'
+            +'</li></tpl></ul></div></tpl>',
+        bodyStyle: {background: 'transparent'}
     });
     modDevTools.BreadcrumbsPanel.superclass.constructor.call(this,config);
 }
