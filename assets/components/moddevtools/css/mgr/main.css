@@ -83,6 +83,16 @@ a.x-menu-item .x-menu-item-text .icon {
     margin: 0 0 10px 0;
 }
 
+@media screen and (max-width: 1024px) {
+    .x-panel.col-sm-4, .col-sm-4 .x-panel-body {
+        width: 100% !important;
+        margin: 2px 0;
+    }
+
+    .x-column-inner > .x-column.col-sm-4 ~ .x-column {
+        margin-left: 0;
+    }
+}
 /*
 ul.moddevtools-row-actions .actions-menu {width: 40px;}
 ul.moddevtools-row-actions .actions-menu:after {content: " \f107";}

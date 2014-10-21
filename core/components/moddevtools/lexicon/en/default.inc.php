@@ -15,3 +15,4 @@ $_lang['moddevtools_replace_with'] = 'Replace with';
 $_lang['moddevtools_find'] = 'Find';
 $_lang['moddevtools_skip'] = 'Skip';
 $_lang['moddevtools_notfound'] = 'Can\'t find the text!';
+$_lang['moddevtools_search_filters'] = 'Search only in elements';

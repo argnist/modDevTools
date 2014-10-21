@@ -21,20 +21,21 @@ modDevTools.panel.SearchForm = function(config) {
             style: {
                 backgroundColor: 'transparent'
             },
-            defaults: {layout: 'form'},
+            defaults: {layout: 'form', cls: 'col-sm-4'},
             items: [{
                 columnWidth: 0.4,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'textfield', cls: 'col-sm-4',
                     id: 'search-string',
                     fieldLabel: _('moddevtools_text_to_find'),
                     allowBlank: false,
                     anchor: '100%'
+
                 }]
             }, {
                 columnWidth: 0.4,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'textfield', cls: 'col-sm-4',
                     id: 'replace-string',
                     fieldLabel: _('moddevtools_replace_with'),
                     anchor: '100%'
@@ -42,7 +43,7 @@ modDevTools.panel.SearchForm = function(config) {
             }, {
                 columnWidth: 0.2,
                 items: [{
-                    xtype: 'button',
+                    xtype: 'button', cls: 'col-sm-4',
                     align: 'left',
                     text: _('moddevtools_find'),
                     handler: this.submit,
@@ -50,6 +51,33 @@ modDevTools.panel.SearchForm = function(config) {
                     anchor: '100%'
                 }]
             }]
+        }, {
+            id: 'filter-group',
+            xtype: 'fieldset',
+            title: _('moddevtools_search_filters'),
+            layout: 'auto',
+            defaults: {
+                style: {width: 'auto', float: 'left', marginRight: '25px'}
+            },
+            items: [{
+                items: {
+                    xtype: 'xcheckbox'
+                    ,name: 'filters[modChunk]'
+                    ,id: 'moddevtools-search-chunks'
+                    ,boxLabel: _('chunks')
+                    ,inputValue: 1
+                    ,checked: true
+                }
+            }, {
+                items: {
+                    xtype: 'xcheckbox'
+                    ,name: 'filters[modTemplate]'
+                    ,id: 'moddevtools-search-templates'
+                    ,boxLabel: _('templates')
+                    ,inputValue: 1
+                    ,checked: true
+                }
+            } ]
         }, {
             id: 'moddevtools-search-results'
         }],
