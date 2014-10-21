@@ -15,13 +15,14 @@ modDevTools.panel.SearchForm = function(config) {
         baseParams: {
             action: 'mgr/search/getlist'
         },
+        defaults: {border: false},
         items: [{
             layout: 'column',
             cls: 'x-toolbar',
             style: {
                 backgroundColor: 'transparent'
             },
-            defaults: {layout: 'form', cls: 'col-sm-4'},
+            defaults: {layout: 'form', cls: 'col-sm-4', border: false},
             items: [{
                 columnWidth: 0.4,
                 items: [{
@@ -29,8 +30,9 @@ modDevTools.panel.SearchForm = function(config) {
                     id: 'search-string',
                     fieldLabel: _('moddevtools_text_to_find'),
                     allowBlank: false,
-                    anchor: '100%'
-
+                    anchor: '100%',
+                    border: false,
+                    labelStyle: 'font-size: 13px; line-height:20px; text-align: center'
                 }]
             }, {
                 columnWidth: 0.4,
@@ -38,7 +40,9 @@ modDevTools.panel.SearchForm = function(config) {
                     xtype: 'textfield', cls: 'col-sm-4',
                     id: 'replace-string',
                     fieldLabel: _('moddevtools_replace_with'),
-                    anchor: '100%'
+                    anchor: '100%',
+                    border: false,
+                    labelStyle: 'font-size: 13px; line-height:20px; text-align: center'
                 }]
             }, {
                 columnWidth: 0.2,
@@ -48,7 +52,8 @@ modDevTools.panel.SearchForm = function(config) {
                     text: _('moddevtools_find'),
                     handler: this.submit,
                     scope: this,
-                    anchor: '100%'
+                    anchor: '100%',
+                    border: false
                 }]
             }]
         }, {
@@ -57,7 +62,8 @@ modDevTools.panel.SearchForm = function(config) {
             title: _('moddevtools_search_filters'),
             layout: 'auto',
             defaults: {
-                style: {width: 'auto', float: 'left', marginRight: '25px'}
+                style: {width: 'auto', float: 'left', marginRight: '25px'},
+                border: false
             },
             items: [{
                 items: {
@@ -66,7 +72,8 @@ modDevTools.panel.SearchForm = function(config) {
                     ,id: 'moddevtools-search-chunks'
                     ,boxLabel: _('chunks')
                     ,inputValue: 1
-                    ,checked: true
+                    ,checked: true,
+                    border: false
                 }
             }, {
                 items: {
@@ -75,7 +82,8 @@ modDevTools.panel.SearchForm = function(config) {
                     ,id: 'moddevtools-search-templates'
                     ,boxLabel: _('templates')
                     ,inputValue: 1
-                    ,checked: true
+                    ,checked: true,
+                    border: false
                 }
             } ]
         }, {

@@ -83,6 +83,11 @@ a.x-menu-item .x-menu-item-text .icon {
     margin: 0 0 10px 0;
 }
 
+/* fix for modx-2.2 */
+table.x-btn {
+    float: left;
+}
+
 @media screen and (max-width: 1024px) {
     .x-panel.col-sm-4, .col-sm-4 .x-panel-body {
         width: 100% !important;

@@ -7,8 +7,9 @@ modDevTools.panel.Home = function (config) {
         cls: 'container',
         items: [{
             html: '<h2>' + _('moddevtools') + '</h2>',
-            cls: '',
-            style: {margin: '15px 0'}
+            cls: 'modx-page-header',
+            border: false,
+            style: {margin: '18px 0'}
         }, {
             xtype: 'modx-tabs',
             defaults: {border: false, autoHeight: true},
@@ -19,7 +20,8 @@ modDevTools.panel.Home = function (config) {
                 layout: 'anchor',
                 items: [{
                     html: _('moddevtools_search_desc'),
-                    cls: 'panel-desc'
+                    border: false,
+                    bodyCssClass: 'panel-desc'
                 },{
                     xtype: 'moddevtools-search-form'
                 }]
