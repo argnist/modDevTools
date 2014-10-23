@@ -32,6 +32,7 @@ class modDevTools {
 			'chunkSuffix' => '.chunk.tpl',
 			'snippetsPath' => $corePath . 'elements/snippets/',
 			'processorsPath' => $corePath . 'processors/',
+            'modx23' => !empty($this->modx->version) && version_compare($this->modx->version['full_version'], '2.3.0', '>='),
             'debug' => false,
 		), $config);
 
@@ -51,7 +52,7 @@ class modDevTools {
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/moddevtools.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/misc/utils.js');
 
-        $modx23 = !empty($this->modx->version) && version_compare($this->modx->version['full_version'], '2.3.0', '>=');
+
 
         $this->modx->controller->addHtml('
             <script type="text/javascript">
@@ -60,11 +61,11 @@ class modDevTools {
                 assets_url: "' . $this->config['assetsUrl'] . '"
                 ,connector_url: "' . $this->config['connectorUrl'] . '"
                 };
-            modDevTools.modx23 = ' . (int)$modx23 . ';
+            modDevTools.modx23 = ' . (int)$this->config['modx23'] . ';
             // ]]>
             </script>');
 
-        if (!$modx23) {
+        if (!$this->config['modx23']) {
             $this->modx->controller->addCss($this->config['cssUrl'] . 'mgr/bootstrap.buttons.css');
         }
 
@@ -377,6 +378,7 @@ class modDevTools {
             'root' => true,
             'url' => '?'
         ));
+        $action = $this->config['modx23'] ? 'resource/update' : '30';
         for ($i = count($resources)-1; $i >= 0; $i--) {
             $resId = $resources[$i];
             if ($resId == 0) {
@@ -384,9 +386,10 @@ class modDevTools {
             }
             $parent = $this->modx->getObject('modResource', $resId);
             if (!$parent) {break;}
+
             $crumbs[] = array(
                 'text' => $parent->get('pagetitle'),
-			    'url' => '?a=30&id=' . $parent->get('id')
+			    'url' => '?a=' . $action . '&id=' . $parent->get('id')
             );
         }
 
