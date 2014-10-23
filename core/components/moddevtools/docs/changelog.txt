@@ -1,5 +1,11 @@
 Changelog for modDevTools.
 
+modDevTools 1.0.0-pl
+==============
+Список ресурсов на странице редактирования сниппета, содержащих вывод данного сниппета // Resource list on Snippet update page
+Список ресурсов на странице редактирования чанка, содержащих вывод данного чанка // Resource list on Chunk update page
+Исправление ошибки c Ctrl-z
+
 modDevTools 0.9.8-rc2
 ==============
 - Панель поиска и замены строк в элементах / Search and Replace panel for elements
