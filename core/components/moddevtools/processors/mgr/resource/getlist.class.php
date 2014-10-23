@@ -6,15 +6,81 @@ include_once MODX_CORE_PATH . 'model/modx/processors/resource/getlist.class.php'
 
 class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
 
+    /**
+     * @param string $link
+     * @param bool|string $nested
+     * @return array
+     */
+    public function getParentsByLink($link, $nested = false) {
+        $c = $this->modx->newQuery('modDevToolsLink');
+        if ($nested) {
+            $c->innerJoin('modDevToolsLink', 'Link', 'Link.parent=modDevToolsLink.child');
+            $c->where(array(
+                'modDevToolsLink.link_type' => $nested,
+            ));
+            $child = 'Link.';
+            $parent = 'modDevToolsLink.';
+        } else {
+            $child = '';
+            $parent = '';
+        }
+        $c->where(array(
+            $child.'link_type' => $link,
+            $child.'child' => $this->getProperty('id'),
+        ));
+        $c->select($parent.'parent');
+        if ($c->prepare() && $c->stmt->execute()) {
+            return $c->stmt->fetchAll(PDO::FETCH_COLUMN);
+        } else {
+            return array();
+        }
+    }
+
 	/**
 	 * @param xPDOQuery $c
 	 *
 	 * @return xPDOQuery
 	 */
 	public function prepareQueryBeforeCount(xPDOQuery $c) {
-        $c->where(array(
-            'template' => $this->getProperty('template'),
-        ));
+        if ($linkType = $this->getProperty('link_type', false)) {
+            $templates = array();
+            $resources = array();
+
+            if ($linkType === 'res-chunk') {
+                $templates = $this->getParentsByLink('temp-chunk');
+                $templates = array_merge($templates, $this->getParentsByLink('chunk-chunk', 'temp-chunk'));
+                $resources = $this->getParentsByLink('res-chunk');
+            } else if ($linkType === 'res-snip') {
+                $templates = $this->getParentsByLink('temp-snip');
+                $templates = array_merge($templates, $this->getParentsByLink('chunk-snip', 'temp-chunk'));
+                $resources = $this->getParentsByLink('res-snip');
+            }
+
+            $templates = array_unique($templates);
+            $tempCount = count($templates);
+            $resCount = count($resources);
+
+            if (($tempCount == 0) && ($resCount == 0)) {
+                $c->where(array(
+                    'id' => 0
+                ));
+            } else {
+                if ($tempCount > 0) {
+                    $c->where(array(
+                        'template:IN' => $templates
+                    ));
+                }
+                if ($resCount > 0) {
+                    $c->orCondition(array(
+                        'id:IN' => $resources
+                    ));
+                }
+            }
+        } else {
+            $c->where(array(
+                'template' => $this->getProperty('id'),
+            ));
+        }
 
 		return $c;
 	}
