@@ -24,7 +24,8 @@ $eventName = $modx->event->name;
 
 switch($eventName) {
     case 'OnDocFormSave':
-
+        $devTools->debug('Start OnDocFormSave');
+        $devTools->parseContent($resource);
         break;
     case 'OnTempFormSave':
         $devTools->debug('Start OnTempFormSave');
@@ -65,6 +66,9 @@ switch($eventName) {
         break;
 
     case 'OnSnipFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD) {
+            $result = $devTools->outputTab('Snippet');
+        }
         break;
 
 

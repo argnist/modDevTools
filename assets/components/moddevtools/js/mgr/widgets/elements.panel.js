@@ -154,7 +154,7 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                             listeners: {
                                                 'success': {fn:function(r) {
                                                     if (r.success) {
-                                                        input.setValue(input.getValue());
+                                                        input.value = input.getValue();
                                                         this.setDisabled(true);
                                                         this.setText(_('save'));
                                                     }

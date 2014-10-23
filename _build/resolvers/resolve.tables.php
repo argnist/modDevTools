@@ -1,14 +1,25 @@
 <?php
 
+/**
+ * @param modX $modx
+ */
 function parseAll($modx) {
     $modx->setLogLevel(modX::LOG_LEVEL_WARN);
+    /**
+     * @var modDevTools $tools
+     */
+    $tools = &$modx->moddevtools;
     $objects = $modx->getIterator('modTemplate');
     foreach ($objects as $object) {
-        $modx->moddevtools->parseContent($object);
+        $tools->parseContent($object);
     }
     $objects = $modx->getIterator('modChunk');
     foreach ($objects as $object) {
-        $modx->moddevtools->parseContent($object);
+        $tools->parseContent($object);
+    }
+    $objects = $modx->getIterator('modResource');
+    foreach ($objects as $object) {
+        $tools->parseContent($object);
     }
     $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 }

@@ -72,8 +72,8 @@ class modDevTools {
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/elements.panel.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.panel.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/snippets.panel.js');
+        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/resources.grid.js');
         if ($class == 'Template') {
-            $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/resources.grid.js');
             $this->modx->controller->addHtml("<script>
                 Ext.onReady(function() {
                     MODx.addTab('modx-template-tabs',{
@@ -99,6 +99,11 @@ class modDevTools {
                         id: 'moddevtools-template-resources-tab',
                         width: '100%',
                         items: [{
+                            html: _('moddevtools_res_template_intro'),
+                            border: false,
+                            cls: 'modx-page-header container',
+                            width: '100%'
+                        },{
                             xtype: 'moddevtools-grid-resources',
                             width: '100%'
                         }]
@@ -133,6 +138,40 @@ class modDevTools {
                         link_type: 'chunk-snip',
                         items: [{
                             xtype: 'moddevtools-panel-snippets'
+                        }]
+                    });
+                    MODx.addTab('modx-chunk-tabs',{
+                        title: _('resources'),
+                        id: 'moddevtools-chunk-resources-tab',
+                        width: '100%',
+                        link_type: 'res-chunk',
+                        items: [{
+                            html: _('moddevtools_res_chunk_intro'),
+                            border: false,
+                            cls: 'modx-page-header container',
+                            width: '100%'
+                        },{
+                            xtype: 'moddevtools-grid-resources',
+                            width: '100%'
+                        }]
+                    });
+                });</script>");
+        } else if ($class == 'Snippet') {
+            $this->modx->controller->addHtml("<script>
+                Ext.onReady(function() {
+                    MODx.addTab('modx-snippet-tabs',{
+                        title: _('resources'),
+                        id: 'moddevtools-snippet-resources-tab',
+                        width: '100%',
+                        link_type: 'res-snip',
+                        items: [{
+                            html: _('moddevtools_res_snippet_intro'),
+                            border: false,
+                            cls: 'modx-page-header container',
+                            width: '100%'
+                        },{
+                            xtype: 'moddevtools-grid-resources',
+                            width: '100%'
                         }]
                     });
                 });</script>");
@@ -175,6 +214,8 @@ class modDevTools {
             return 'temp';
         } else if ($object instanceof modChunk) {
             return 'chunk';
+        } else if ($object instanceof modResource) {
+            return 'res';
         } else {
             return false;
         }

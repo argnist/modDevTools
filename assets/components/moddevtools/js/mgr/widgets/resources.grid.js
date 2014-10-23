@@ -4,17 +4,19 @@ modDevTools.grid.Resources = function (config) {
 		config.id = 'moddevtools-grid-resources';
 	}
     this.sm = new Ext.grid.CheckboxSelectionModel();
+    this.config = config;
 	Ext.applyIf(config, {
 		url: modDevTools.config.connector_url,
 		fields: this.getFields(config),
 		columns: this.getColumns(config),
 		tbar: false,
 		baseParams: {
-			action: 'mgr/resource/getlist',
-            template: MODx.request.id,
+            action: 'mgr/resource/getlist',
             sort: 'createdon',
-            dir: 'DESC'
-		},
+            dir: 'DESC',
+            id: MODx.request.id,
+            link_type: config.ownerCt.link_type
+        },
 		viewConfig: {
 			forceFit: true,
 			enableRowBody: true,
@@ -31,12 +33,13 @@ modDevTools.grid.Resources = function (config) {
 		remoteSort: true,
 		autoHeight: true
 	});
+    this.config = config;
 	modDevTools.grid.Resources.superclass.constructor.call(this, config);
 };
 Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
 	windows: {},
 
-	getMenu: function (grid, rowIndex) {
+    getMenu: function (grid, rowIndex) {
 		var ids = this._getSelectedIds();
 
 		var row = grid.getStore().getAt(rowIndex);
