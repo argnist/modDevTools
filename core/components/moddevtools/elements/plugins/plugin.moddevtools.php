@@ -44,9 +44,7 @@ switch($eventName) {
     /* Add tabs */
     case 'OnDocFormPrerender':
         if ($modx->event->name == 'OnDocFormPrerender') {
-            if ($modx->controller->config['controller'] !== 'resource/data') {
-                $devTools->getBreadCrumbs($resource, $mode);
-            }
+            $devTools->getBreadCrumbs($scriptProperties);
             return;
         }
         break;

@@ -397,7 +397,10 @@ class modDevTools {
     }
 
 
-    public function getBreadCrumbs($resource, $mode) {
+    public function getBreadCrumbs($config) {
+        $mode = $this->modx->getOption('mode', $config);
+        $resource = $this->modx->getOption('resource', $config);
+
         if (($mode === modSystemEvent::MODE_NEW) || !$resource) {
             if (!isset($_GET['parent'])) {return;}
             $resource = $this->modx->getObject('modResource', $_GET['parent']);
@@ -414,7 +417,7 @@ class modDevTools {
 
 
         if ($mode === modSystemEvent::MODE_NEW) {
-            $resources[] = $_GET['parent'];
+            array_unshift($resources, $_GET['parent']);
         }
 
         $crumbs = array();
@@ -424,7 +427,24 @@ class modDevTools {
             'root' => true,
             'url' => '?'
         ));
-        $action = $this->config['modx23'] ? 'resource/update' : '30';
+
+        $controllerConfig = $this->modx->controller->config;
+        $action = $controllerConfig['controller'];
+
+        if ($action == 'resource/create') {
+            $action = 'resource/update';
+        }
+
+        if (isset($controllerConfig['id'])) {
+            if ($controllerConfig['controller'] == 'resource/create') {
+                $actionObj = $this->modx->getObject('modAction', array('controller' => 'resource/update'));
+                $action = $actionObj->get('id');
+            } else {
+                $action = $controllerConfig['id'];
+            }
+        }
+
+        $isAll = false;
         for ($i = count($resources)-1; $i >= 0; $i--) {
             $resId = $resources[$i];
             if ($resId == 0) {
@@ -432,6 +452,9 @@ class modDevTools {
             }
             $parent = $this->modx->getObject('modResource', $resId);
             if (!$parent) {break;}
+            if ($parent->get('parent') == 0) {
+                $isAll = true;
+            }
 
             $crumbs[] = array(
                 'text' => $parent->get('pagetitle'),
@@ -439,11 +462,19 @@ class modDevTools {
             );
         }
 
-        if (count($resources) == $limit) {
+        if ((count($resources) == $limit) && !$isAll) {
             array_unshift($crumbs, array(
                 'text' => '...',
             ));
         }
+
+        // Add pagetitle of current page
+        if ($mode === modSystemEvent::MODE_NEW) {
+            $pagetitle = $this->modx->lexicon('new_document');
+        } else {
+            $pagetitle = $resource->get('pagetitle');
+        }
+        $crumbs[] = array('text' => $pagetitle);
 
         $crumbs = $this->modx->toJSON($crumbs);
 
@@ -451,7 +482,7 @@ class modDevTools {
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/breadcrumbs.panel.js');
         $this->modx->controller->addHtml("<script>
             Ext.onReady(function() {
-                var header = Ext.getCmp('modx-panel-resource');
+                var header = Ext.getCmp('modx-resource-header').ownerCt;
                 header.insert(1, {
                     xtype: 'moddevtools-breadcrumbs-panel'
                     ,id: 'resource-breadcrumbs'
@@ -462,9 +493,7 @@ class modDevTools {
 
                 var crumbCmp = Ext.getCmp('resource-breadcrumbs');
                 var bd = { trail : {$crumbs}};
-                bd.trail.push({text: crumbCmp.getPagetitle()})
 		        crumbCmp.updateDetail(bd);
-		       // Ext.getCmp('modx-resource-header').hide();
 
 		        Ext.getCmp('modx-resource-pagetitle').on('keyup', function(){
                     bd.trail[bd.trail.length-1] = {text: crumbCmp.getPagetitle()};

@@ -4,6 +4,8 @@ modDevTools 1.0.0-pl
 ==============
 Список ресурсов на странице редактирования сниппета, содержащих вывод данного сниппета // Resource list on Snippet update page
 Список ресурсов на странице редактирования чанка, содержащих вывод данного чанка // Resource list on Chunk update page
+Закладки на страницах элементов и кнопки действий в таблицах ресурсов показываются в зависимости от прав, назначенных пользователю // Elements' tabs and action buttons in resource grids are displayed depending on user access permissions
+Хлебные крошки показываются в Обзоре ресурса // Breadcrumbs are displayed in Resource Overview
 Исправление ошибки c Ctrl-z
 
 modDevTools 0.9.8-rc2
