@@ -69,6 +69,11 @@ class modDevTools {
             $this->modx->controller->addCss($this->config['cssUrl'] . 'mgr/bootstrap.buttons.css');
         }
 
+        $view_chunk = $this->modx->hasPermission('view_chunk');
+        $view_temp = $this->modx->hasPermission('view_template');
+        $view_snip = $this->modx->hasPermission('view_snippet');
+        $view_doc = $this->modx->hasPermission('resource_tree');
+
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/elements.panel.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.panel.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/snippets.panel.js');
@@ -76,7 +81,7 @@ class modDevTools {
         if ($class == 'Template') {
             $this->modx->controller->addHtml("<script>
                 Ext.onReady(function() {
-                    MODx.addTab('modx-template-tabs',{
+                    " . ($view_chunk ? "MODx.addTab('modx-template-tabs',{
                         title: _('chunks'),
                         id: 'moddevtools-template-chunks-tab',
                         width: '100%',
@@ -84,8 +89,8 @@ class modDevTools {
                         items: [{
                             xtype: 'moddevtools-panel-chunks'
                         }]
-                    });
-                    MODx.addTab('modx-template-tabs',{
+                    });" : "") . "
+                    " . ($view_snip ? "MODx.addTab('modx-template-tabs',{
                         title: _('snippets'),
                         id: 'moddevtools-template-snippets-tab',
                         width: '100%',
@@ -93,8 +98,8 @@ class modDevTools {
                         items: [{
                             xtype: 'moddevtools-panel-snippets'
                         }]
-                    });
-                    MODx.addTab('modx-template-tabs',{
+                    });" : "") . "
+                    " . ($view_doc ? "MODx.addTab('modx-template-tabs',{
                         title: _('resources'),
                         id: 'moddevtools-template-resources-tab',
                         width: '100%',
@@ -107,13 +112,13 @@ class modDevTools {
                             xtype: 'moddevtools-grid-resources',
                             width: '100%'
                         }]
-                    });
+                    });" : "") . "
                 });</script>");
         } else if ($class == 'Chunk') {
             $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.panel.js');
             $this->modx->controller->addHtml("<script>
                 Ext.onReady(function() {
-                    MODx.addTab('modx-chunk-tabs',{
+                    " . ($view_temp ? "MODx.addTab('modx-chunk-tabs',{
                         title: _('templates'),
                         id: 'moddevtools-chunk-templates-tab',
                         width: '100%',
@@ -121,8 +126,8 @@ class modDevTools {
                         items: [{
                             xtype: 'moddevtools-panel-templates'
                         }]
-                    });
-                    MODx.addTab('modx-chunk-tabs',{
+                    });" : "") . "
+                    " . ($view_chunk ? "MODx.addTab('modx-chunk-tabs',{
                         title: _('chunks'),
                         id: 'moddevtools-chunk-chunks-tab',
                         width: '100%',
@@ -130,8 +135,8 @@ class modDevTools {
                         items: [{
                             xtype: 'moddevtools-panel-chunks'
                         }]
-                    });
-                    MODx.addTab('modx-chunk-tabs',{
+                    });" : "") . "
+                    " . ($view_snip ? "MODx.addTab('modx-chunk-tabs',{
                         title: _('snippets'),
                         id: 'moddevtools-chunk-snippets-tab',
                         width: '100%',
@@ -139,8 +144,8 @@ class modDevTools {
                         items: [{
                             xtype: 'moddevtools-panel-snippets'
                         }]
-                    });
-                    MODx.addTab('modx-chunk-tabs',{
+                    });" : "") . "
+                    " . ($view_doc ? "MODx.addTab('modx-chunk-tabs',{
                         title: _('resources'),
                         id: 'moddevtools-chunk-resources-tab',
                         width: '100%',
@@ -154,12 +159,12 @@ class modDevTools {
                             xtype: 'moddevtools-grid-resources',
                             width: '100%'
                         }]
-                    });
+                    });" : "") . "
                 });</script>");
         } else if ($class == 'Snippet') {
             $this->modx->controller->addHtml("<script>
                 Ext.onReady(function() {
-                    MODx.addTab('modx-snippet-tabs',{
+                    " . ($view_doc ? "MODx.addTab('modx-snippet-tabs',{
                         title: _('resources'),
                         id: 'moddevtools-snippet-resources-tab',
                         width: '100%',
@@ -173,7 +178,7 @@ class modDevTools {
                             xtype: 'moddevtools-grid-resources',
                             width: '100%'
                         }]
-                    });
+                    });" : "") . "
                 });</script>");
         }
         return true;
