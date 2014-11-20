@@ -22,6 +22,19 @@ $path = $modx->getOption('moddevtools_core_path',null,$modx->getOption('core_pat
 $devTools = $modx->getService('devTools','modDevTools',$path, array('debug' => false));
 $eventName = $modx->event->name;
 
+/**
+ * Usergroup check. Only show modDevTools for specific usergroups
+ * Uses comma separated plugin property (name: usergroups) to specify the groups
+ * When property is empty modDevTools will be visible for all users
+ */
+if($usergroups) {
+    $usergroups = explode(',', $usergroups);
+    array_walk($usergroups, 'trim');
+    if(!$modx->user->isMember($usergroups)) {
+        return;
+    }
+}
+
 switch($eventName) {
     case 'OnDocFormSave':
         $devTools->debug('Start OnDocFormSave');
