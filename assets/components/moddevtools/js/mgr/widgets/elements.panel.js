@@ -163,6 +163,18 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                         });
                                     }}
                                 }
+                            },{
+                                xtype: 'button',
+                                id: 'open-' + params.element + '-' + r.id,
+                                text: _('open'),
+                                element: params.element,
+                                elementId: r.id,
+                                listeners: {
+                                    click: {fn:function() {
+                                        var action = 'element/'+this.element+'/update';
+                                        window.open('?a=' + (modDevTools.modx23 ? action : MODx.action[action]) + '&id=' + this.elementId);
+                                    }}
+                                }
                             }],
                             listeners: {
                                 'beforecollapse':{fn:function(a,b){
