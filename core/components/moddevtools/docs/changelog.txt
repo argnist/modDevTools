@@ -4,6 +4,7 @@ modDevTools 1.0.1-pl
 ==============
 - Элементы можно открыть на редактирование в новом окне // Open elements in new window
 - Хлебные крошки больше не показывают ресурсы выше установленного для пользователя корня ресурсов // Breadcrumbs no longer show resources upper tree root node for user
+- Исправление отключения кнопки сохранить в разных версиях MODX // Fix disable Save button in different MODX versions
 
 modDevTools 1.0.0-pl
 ==============

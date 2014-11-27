@@ -33,8 +33,7 @@ modDevTools.panel.Elements = function(config) {
     var tabs = config.ownerCt.ownerCt;
     if (!tabs.isDevToolsEventSet) {
         tabs.addListener('tabchange', function(){
-            var btn = Ext.getCmp('modx-abtn-save');
-            btn.setDisabled(false);
+            this.disableSaveButton(false);
         }, this);
         tabs.isDevToolsEventSet = true;
     }
@@ -110,8 +109,7 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                                     }},
                                     'focus': {fn:function(editor){
                                         this.focusedEditor = editor;
-                                        var btn = Ext.getCmp('modx-abtn-save');
-                                        btn.setDisabled(true);
+                                        this.disableSaveButton(true);
                                     }, scope: this},
                                     afterrender: {fn:function(field) {
                                         if (field.xtype == 'modx-texteditor') {
@@ -199,6 +197,13 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
             name: input.record.name,
             snippet: input.getValue()
         };
+    },
+
+    disableSaveButton: function(value) {
+        var btns = Ext.getCmp('modx-action-buttons');
+        if (btns && btns.get(0)) {
+            btns.get(0).setDisabled(value);
+        }
     },
 
     highlightElements: function(editor, name) {
