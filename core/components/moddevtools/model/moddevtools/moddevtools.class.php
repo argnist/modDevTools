@@ -421,6 +421,8 @@ class modDevTools {
     public function getBreadCrumbs($config) {
         $mode = $this->modx->getOption('mode', $config);
         $resource = $this->modx->getOption('resource', $config);
+        $rootId = $this->modx->getOption('tree_root_id');
+        $limit = 3; /** @TODO вынести в настройки, когда они будут */
 
         if (($mode === modSystemEvent::MODE_NEW) || !$resource) {
             if (!isset($_GET['parent'])) {return;}
@@ -432,10 +434,15 @@ class modDevTools {
             $this->modx->reloadContext($context);
         }
 
-        /** @TODO вынести в настройки, когда они будут */
-        $limit = 3;
-        $resources = $this->modx->getParentIds($resource->get('id'), $limit, array( 'context' => $context ));
-
+        if ($rootId == $resource->get('id')) {
+            $resources = array();
+        } else {
+            $resources = $this->modx->getParentIds($resource->get('id'), $limit, array( 'context' => $context ));
+            $rootKey = array_search($rootId, $resources);
+            if ($rootKey !== false) {
+                $resources = array_slice($resources, 0, $rootKey+1);
+            }
+        }
 
         if ($mode === modSystemEvent::MODE_NEW) {
             array_unshift($resources, $_GET['parent']);
@@ -471,6 +478,8 @@ class modDevTools {
             if ($resId == 0) {
                 continue;
             }
+
+            /** @var modResource $parent */
             $parent = $this->modx->getObject('modResource', $resId);
             if (!$parent) {break;}
             if ($parent->get('parent') == 0) {
