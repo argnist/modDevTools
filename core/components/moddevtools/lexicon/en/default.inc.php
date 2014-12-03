@@ -19,3 +19,4 @@ $_lang['moddevtools_find'] = 'Find';
 $_lang['moddevtools_skip'] = 'Skip';
 $_lang['moddevtools_notfound'] = 'Can\'t find the text!';
 $_lang['moddevtools_search_filters'] = 'Search only in elements';
+$_lang['moddevtools_virtual_chunk_desc'] = 'Virtual chunk. If it is not changed it will exist only until next any parent element save.';

@@ -19,3 +19,4 @@ $_lang['moddevtools_find'] = 'Найти';
 $_lang['moddevtools_skip'] = 'Пропустить';
 $_lang['moddevtools_notfound'] = 'Ничего не найдено!';
 $_lang['moddevtools_search_filters'] = 'Искать только в элементах';
+$_lang['moddevtools_virtual_chunk_desc'] = 'Виртуальный чанк. Если его не изменить, он существует только до следующего сохранения любого родительского элемента.';

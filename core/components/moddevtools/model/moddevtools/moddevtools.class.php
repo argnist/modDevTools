@@ -10,7 +10,6 @@ class modDevTools {
     /** @var array $perms Permissions  */
     protected $perms = array();
 
-
 	/**
 	 * @param modX $modx
 	 * @param array $config
@@ -36,6 +35,7 @@ class modDevTools {
 			'snippetsPath' => $corePath . 'elements/snippets/',
 			'processorsPath' => $corePath . 'processors/',
             'modx23' => !empty($this->modx->version) && version_compare($this->modx->version['full_version'], '2.3.0', '>='),
+            'createVirtual' => false,
             'debug' => false,
 		), $config);
 
@@ -229,6 +229,8 @@ class modDevTools {
         foreach ($links as $link) {
             $link->remove();
         }
+        // Prevent fast increasing of link id
+        $this->modx->query("ALTER TABLE {$this->modx->getTableName('modDevToolsLink')} AUTO_INCREMENT = 0;");
     }
 
     /**
@@ -338,6 +340,9 @@ class modDevTools {
         }
 
         $this->clearLinks($objLink, $object->get('id'));
+        if ($this->config['createVirtual']) {
+            $this->removeVirtualChunks();
+        }
 
         $tags = array();
         $this->findTags($object->get('content'), $tags);
@@ -370,10 +375,50 @@ class modDevTools {
              * @var bool|xPDOObject $child
              */
             $child = $this->findObject($tag['class'], $tag['name']);
+            if ($this->config['createVirtual'] && ($child === false) && ($tag['class'] == 'modChunk')) {
+                $child = $this->createVirtualChunk($tag['name']);
+            }
             if ($child !== false) {
                 $this->createLink($parent, $child, $linkType . '-' . $type);
             }
         }
+    }
+
+    /**
+     * Remove virtual chunks
+     * @return bool
+     */
+    public function removeVirtualChunks() {
+        $chunks = $this->modx->getIterator('modChunk', array('snippet' => 'moddevtools'));
+        if (empty($chunks)) {
+            return false;
+        }
+        $this->debug('Remove virtual chunks');
+        /** @var modChunk $chunk */
+        foreach ($chunks as $chunk) {
+            $chunk->remove();
+        }
+        // Prevent fast increasing of chunk id
+        $this->modx->query("ALTER TABLE {$this->modx->getTableName('modChunk')} AUTO_INCREMENT = 0;");
+        return true;
+    }
+
+    /**
+     * Create virtual chunk with given name
+     * @param $name
+     * @return bool|modChunk
+     */
+    public function createVirtualChunk($name) {
+        $this->debug('Try to create virtual chunk ' . $name);
+        /** @var modChunk $chunk */
+        $chunk = $this->modx->newObject('modChunk');
+        $chunk->set('name', $name);
+        $chunk->set('snippet', 'moddevtools');
+        $saved = false;
+        if ($chunk->validate()) {
+            $saved = $chunk->save();
+        }
+        return $saved ? $chunk: false;
     }
 
     /**

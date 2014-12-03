@@ -1,5 +1,9 @@
 Changelog for modDevTools.
 
+modDevTools 1.1.0-pl
+==============
+- Создание виртуальных чанков // Virtual chunk creation from parent
+
 modDevTools 1.0.1-pl
 ==============
 - Элементы можно открыть на редактирование в новом окне // Open elements in new window

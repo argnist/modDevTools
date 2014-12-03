@@ -54,7 +54,7 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
             url: modDevTools.config.connector_url,
             baseParams: baseParams,
             autoLoad: true,
-            fields: ['id', 'name', 'snippet'],
+            fields: ['id', 'name', 'snippet', 'virtual'],
             root: 'results',
             totalProperty: 'total',
             autoDestroy: true,
@@ -70,7 +70,7 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                             headerCfg: {
                                 cls: 'x-panel-header',
                                 style: {
-                                    background: '#ececec',
+                                    background: r.virtual ? '#f0ad4e' : '#ececec',
                                     padding: '10px',
                                     margin: '0 0 10px 0'
                                 }
@@ -177,10 +177,12 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                             listeners: {
                                 'beforecollapse':{fn:function(a,b){
                                     return b !== true; // prevent collapse if not collapse directly on panel
-                                },scope: this}
+                                },scope: this},
+                                'render': this.loadTip
                             },
                             collapsed:false,
-                            collapsible: true
+                            collapsible: true,
+                            virtual: r.virtual
                         };
                         this.items.itemAt(1).add(item);
                     }
@@ -188,6 +190,16 @@ Ext.extend(modDevTools.panel.Elements, MODx.Panel, {
                 },scope:this}
             }
         });
+    },
+
+    loadTip: function(){
+        if (this.virtual) {
+            Ext.QuickTips.register({
+                target:  this.header
+                ,text: _('moddevtools_virtual_chunk_desc')
+                ,enabled: true
+            });
+        }
     },
 
     getUpdateParams: function(input) {

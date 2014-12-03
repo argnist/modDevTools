@@ -24,6 +24,24 @@ class modDevToolsChunkGetListProcessor extends modObjectGetListProcessor {
 		return $c;
 	}
 
+    /**
+     * Handle virtual chunks
+     * @param xPDOObject $object
+     * @return array
+     */
+    public function prepareRow(xPDOObject $object) {
+        $data = $object->toArray();
+        $virtual = ($data['snippet'] == 'moddevtools');
+        $data = array(
+            'id' => $data['id'],
+            'name' => $data['name'],
+            'snippet' => $virtual ? '' : $data['snippet'],
+            'virtual' => $virtual
+        );
+
+        return $data;
+    }
+
 }
 
 return 'modDevToolsChunkGetListProcessor';
