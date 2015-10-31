@@ -14,44 +14,52 @@
 
 /**
  * @var modx $modx
+ * @var array $scriptProperties
+ * @var modResource $resource
+ * @var modTemplate $template
+ * @var modChunk $chunk
  */
-$path = $modx->getOption('moddevtools_core_path',null,$modx->getOption('core_path').'components/moddevtools/').'model/moddevtools/';
+$corePath = $modx->getOption('moddevtools.core_path', null, $modx->getOption('core_path') . 'components/moddevtools/');
 /**
- * @var modDevTools $devTools
+ * @var modDevTools $moddevtools
  */
-$devTools = $modx->getService('devTools','modDevTools',$path, array('debug' => false));
-$eventName = $modx->event->name;
+$moddevtools = $modx->getService('moddevtools', 'modDevTools', $corePath . 'model/moddevtools/', array(
+    'core_path' => $corePath,
+    'debug' => false
+));
 
-switch($eventName) {
+$eventName = $modx->event->name;
+switch ($eventName) {
     case 'OnDocFormSave':
-        $devTools->debug('Start OnDocFormSave');
-        $devTools->parseContent($resource);
+        $moddevtools->debug('Start OnDocFormSave');
+        $moddevtools->parseContent($resource);
         break;
     case 'OnTempFormSave':
-        $devTools->debug('Start OnTempFormSave');
-        $devTools->parseContent($template);
+        $moddevtools->debug('Start OnTempFormSave');
+        $moddevtools->parseContent($template);
         break;
     case 'OnTVFormSave':
 
         break;
     case 'OnChunkFormSave':
-        $devTools->debug('Start OnChunkFormSave');
-        $devTools->parseContent($chunk);
+        $moddevtools->debug('Start OnChunkFormSave');
+        $moddevtools->parseContent($chunk);
         break;
     case 'OnSnipFormSave':
 
         break;
-    /* Add tabs */
+    /* Add breadcrumbs */
     case 'OnDocFormPrerender':
         if ($modx->event->name == 'OnDocFormPrerender') {
-            $devTools->getBreadCrumbs($scriptProperties);
+            $moddevtools->getBreadCrumbs($scriptProperties);
             return;
         }
         break;
 
+    /* Add tabs */
     case 'OnTempFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD) {
-            $result = $devTools->outputTab('Template');
+            $result = $moddevtools->outputTab('Template');
         }
         break;
 
@@ -61,13 +69,13 @@ switch($eventName) {
 
     case 'OnChunkFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD) {
-            $result = $devTools->outputTab('Chunk');
+            $result = $moddevtools->outputTab('Chunk');
         }
         break;
 
     case 'OnSnipFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD) {
-            $result = $devTools->outputTab('Snippet');
+            $result = $moddevtools->outputTab('Snippet');
         }
         break;
 

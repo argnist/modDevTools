@@ -5,7 +5,7 @@ modDevTools.panel.Chunks = function(config) {
         params: {
             action: 'mgr/chunk/getlist',
             parent: MODx.request.id,
-            link_type: config.ownerCt.link_type
+            link_type: config.link_type
         },
         config: {
             element: 'chunk',
@@ -18,15 +18,11 @@ modDevTools.panel.Chunks = function(config) {
 };
 
 Ext.extend(modDevTools.panel.Chunks,modDevTools.panel.Elements, {
-    getIntro: function() {
-        return '<p>' + _('moddevtools_chunks_intro') + '</p>';
-    },
-
     getElementValue: function (r) {
         return r.snippet || '';
     },
 
-    loadProperties: function(r) {
+    loadProperties: function() {
         return false;
     }
 });

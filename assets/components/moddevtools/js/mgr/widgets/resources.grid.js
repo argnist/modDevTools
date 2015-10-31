@@ -6,16 +6,17 @@ modDevTools.grid.Resources = function (config) {
     this.sm = new Ext.grid.CheckboxSelectionModel();
     this.config = config;
 	Ext.applyIf(config, {
-		url: modDevTools.config.connector_url,
+		url: modDevTools.config.connectorUrl,
 		fields: this.getFields(config),
 		columns: this.getColumns(config),
 		tbar: false,
+        autoExpandColumn: 'pagetitle',
 		baseParams: {
             action: 'mgr/resource/getlist',
             sort: 'createdon',
             dir: 'DESC',
             id: MODx.request.id,
-            link_type: config.ownerCt.link_type
+            link_type: config.link_type
         },
 		viewConfig: {
 			forceFit: true,
@@ -23,7 +24,7 @@ modDevTools.grid.Resources = function (config) {
 			autoFill: true,
 			showPreview: true,
 			scrollOffset: 0,
-			getRowClass: function (rec, ri, p) {
+			getRowClass: function (rec) {
 				return !rec.data.published
 					? 'moddevtools-row-disabled'
 					: '';
@@ -76,9 +77,9 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
             return false;
         }
         MODx.Ajax.request({
-            url: modDevTools.modx23 ? MODx.config.connector_url : MODx.config.connectors_url + 'resource/index.php',
+            url: MODx.config.connector_url,
             params: {
-                action: modDevTools.modx23 ? 'resource/' + action : action,
+                action: 'resource/' + action,
                 id: id
             },
             listeners: {
@@ -91,45 +92,45 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
         })
     },
 
-	unpublishResource: function (act, btn) {
+	unpublishResource: function () {
         this.updateResource('unpublish');
 	},
 
-    publishResource: function (act, btn) {
+    publishResource: function () {
         this.updateResource('publish');
     },
 
-    removeResource: function (act, btn) {
+    removeResource: function () {
         this.updateResource('delete');
     },
 
-    undeleteResource: function (act, btn) {
+    undeleteResource: function () {
         this.updateResource('undelete');
     },
 
-    editResource: function(act, btn) {
+    editResource: function() {
         var id = this._getResId();
         if (!id) {
             return false;
         }
-        MODx.loadPage((modDevTools.modx23 ? 'resource/update' : '?a=' + MODx.action['resource/update']) + '&id=' + id);
+        MODx.loadPage('resource/update' + '&id=' + id);
     },
 
-    previewResource: function(act, btn) {
+    previewResource: function() {
         window.open(this.menu.record.preview_url);
     },
 
 
     changeTemplate: function(btn,e) {
-        var cs = this.getSelectedAsList();
-        if (cs === false) return false;
-        var r = {id: cs};
+        var sels = this.getSelectionModel().getSelections();
+        if (sels.length <= 0) return false;
+        var r = sels[0].data;
         if (!this.changeTemplateWindow) {
             this.changeTemplateWindow = MODx.load({
                 xtype: 'moddevtools-window-change-template'
                 ,record: r
                 ,listeners: {
-                    'success': {fn:function(r) {
+                    'success': {fn:function() {
                         this.refresh();
                     },scope:this}
                 }
@@ -140,16 +141,16 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
         return true;
     },
 
-	getFields: function (config) {
-		return ['id', 'pagetitle', 'description', 'published', 'createdon', 'actions', 'preview_url'];
+	getFields: function () {
+		return ['id', 'pagetitle', 'description', 'published', 'createdon', 'actions', 'preview_url', 'template'];
 	},
 
-	getColumns: function (config) {
+	getColumns: function () {
 		return [{
 			header: _('id'),
 			dataIndex: 'id',
 			sortable: true,
-			width: 15
+			width: 20
 		}, {
 			header: _('pagetitle'),
 			dataIndex: 'pagetitle',
@@ -161,28 +162,33 @@ Ext.extend(modDevTools.grid.Resources, MODx.grid.Grid, {
 			dataIndex: 'published',
 			renderer: modDevTools.utils.renderBoolean,
 			sortable: true,
-			width: 30
+			width: 40
 		}, {
             header: _('createdon'),
             dataIndex: 'createdon',
             sortable: true,
-            width: 45
+            width: 50
         }, {
 			header: _('moddevtools_grid_actions'),
 			dataIndex: 'actions',
 			renderer: modDevTools.utils.renderActions,
 			sortable: false,
-			width: 160,
+			width: 60,
 			id: 'actions'
-		}];
+		}, {
+            header: _('moddevtools_template'),
+            dataIndex: 'template',
+            sortable: false,
+            hidden: true
+        }];
 	},
 
 	onClick: function (e) {
-		var elem = e.getTarget();
-		if (elem.nodeName == 'BUTTON') {
+		var elem = e.getTarget('.action', 2, true);
+		if (elem) {
 			var row = this.getSelectionModel().getSelected();
 			if (typeof(row) != 'undefined') {
-				var action = elem.getAttribute('action');
+				var action = elem.getAttribute('data-action');
 				if (action == 'showMenu') {
 					var ri = this.getStore().find('id', row.id);
 					return this._showMenu(this, ri, e);
@@ -203,7 +209,7 @@ modDevTools.window.ChangeTemplate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('moddevtools_template_change'),
-        url: modDevTools.config.connector_url,
+        url: modDevTools.config.connectorUrl,
         baseParams: {
             action: 'mgr/resource/changetemplate'
         },

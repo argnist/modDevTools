@@ -5,7 +5,7 @@ modDevTools.panel.Snippets = function(config) {
         params: {
             action: 'mgr/snippet/getlist',
             parent: MODx.request.id,
-            link_type: config.ownerCt.link_type
+            link_type: config.link_type
         },
         config: {
             element: 'snippet',
@@ -18,10 +18,6 @@ modDevTools.panel.Snippets = function(config) {
 };
 
 Ext.extend(modDevTools.panel.Snippets, modDevTools.panel.Elements, {
-    getIntro: function() {
-        return '<p>' + _('moddevtools_snippets_intro') + '</p>';
-    },
-
     getElementValue: function (r) {
         return '<?php\r\n' + (r.snippet || '');
     },
@@ -33,14 +29,14 @@ Ext.extend(modDevTools.panel.Snippets, modDevTools.panel.Elements, {
                 beforerender: {fn:function(form){
                     // console.log(form);
                     Ext.Ajax.request({
-                        url: modDevTools.modx23 ? MODx.config.connector_url : (MODx.config.connectors_url + 'element/index.php')
+                        url: MODx.config.connector_url
                         ,params: {
-                            action: modDevTools.modx23 ? 'element/getinsertproperties' : 'getInsertProperties'
+                            action: 'element/getinsertproperties'
                             ,classKey: 'modSnippet'
                             ,pk: r.id
                             ,propertySet: 0
                         }
-                        ,success: function(response, opts) {
+                        ,success: function(response) {
                             var obj = Ext.decode(response.responseText);
                             var html = '';
                             for (var i=0; i< obj.length; i++) {
@@ -50,13 +46,19 @@ Ext.extend(modDevTools.panel.Snippets, modDevTools.panel.Elements, {
                                 title: _('properties'),
                                 headerCfg: {
                                     style: {
-                                        border: '1px solid #ccc',
                                         background: '#f0f0f0',
+                                        margin: '10px 0 0',
                                         padding: '10px',
                                         cursor: 'pointer'
                                     }
                                 },
-                                html: html,
+                                items: [{
+                                    html: html,
+                                    style: {
+                                        padding: '15px',
+                                        border: '1px solid #ececec'
+                                    }
+                                }],
                                 collapsible: true,
                                 collapsed: true,
                                 listeners: {

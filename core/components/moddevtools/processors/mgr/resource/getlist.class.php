@@ -4,6 +4,9 @@
  */
 include_once MODX_CORE_PATH . 'model/modx/processors/resource/getlist.class.php';
 
+/**
+ * Class modDevToolsResourceGetListProcessor
+ */
 class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
 
     /**
@@ -148,7 +151,7 @@ class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
             if (!$array['published']) {
                 $array['actions'][] = array(
                     'cls' => '',
-                    'icon' => 'icon icon-power-off action-green',
+                    'icon' => 'icon icon-power-off red',
                     'title' => $this->modx->lexicon('publish'),
                     'action' => 'publishResource',
                     'button' => true,
@@ -157,7 +160,7 @@ class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
             } else {
                 $array['actions'][] = array(
                     'cls' => '',
-                    'icon' => 'icon icon-power-off action-gray',
+                    'icon' => 'icon icon-power-off green',
                     'title' => $this->modx->lexicon('unpublish'),
                     'action' => 'unpublishResource',
                     'button' => true,
@@ -171,7 +174,7 @@ class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
                 // Remove
                 $array['actions'][] = array(
                     'cls' => '',
-                    'icon' => 'icon icon-trash-o action-red',
+                    'icon' => 'icon icon-trash-o',
                     'title' => $this->modx->lexicon('remove'),
                     'action' => 'removeResource',
                     'button' => true,
@@ -180,7 +183,7 @@ class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
             } else {
                 $array['actions'][] = array(
                     'cls' => '',
-                    'icon' => 'icon icon-trash-o action-green',
+                    'icon' => 'icon icon-trash-o red',
                     'title' => $this->modx->lexicon('undelete'),
                     'action' => 'undeleteResource',
                     'button' => true,

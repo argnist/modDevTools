@@ -1,13 +1,13 @@
-modDevTools.utils.renderBoolean = function (value, props, row) {
+modDevTools.utils.renderBoolean = function (value) {
 
 	return value
 		? String.format('<span class="green">{0}</span>', _('yes'))
 		: String.format('<span class="red">{0}</span>', _('no'));
-}
+};
 
 modDevTools.utils.getMenu = function (actions, grid, selected) {
 	var menu = [];
-	var cls, icon, title, action = '';
+	var cls, icon, title, action;
 
 	for (var i in actions) {
 		if (!actions.hasOwnProperty(i)) {
@@ -54,7 +54,7 @@ modDevTools.utils.getMenu = function (actions, grid, selected) {
 
 modDevTools.utils.renderActions = function (value, props, row) {
 	var res = [];
-	var cls, icon, title, action, item = '';
+	var cls, icon, title, action, item;
 	for (var i in row.data.actions) {
 		if (!row.data.actions.hasOwnProperty(i)) {
 			continue;
@@ -70,7 +70,7 @@ modDevTools.utils.renderActions = function (value, props, row) {
 		title = a['title'] ? a['title'] : '';
 
 		item = String.format(
-			'<li class="{0}"><button class="btn btn-default {1}" action="{2}" title="{3}">&nbsp;{3}</button></li>',
+			'<li class="{0}"><a class="action" href="#" data-action="{2}" title="{3}"><i class="{1}"></i></a></li>',
 			cls, icon, action, title
 		);
 
@@ -81,4 +81,24 @@ modDevTools.utils.renderActions = function (value, props, row) {
 		'<ul class="moddevtools-row-actions">{0}</ul>',
 		res.join('')
 	);
+};
+
+modDevTools.utils.addTab = function(tbp,opt) {
+	var tabs = Ext.getCmp(tbp);
+	if (tabs) {
+		Ext.applyIf(opt,{
+			id: 'modx-'+Ext.id()+'-tab'
+			,layout: 'form'
+			,labelAlign: 'left'
+			,autoHeight: true
+			,defaults: {
+				border: false
+				,msgTarget: 'side'
+				,width: 400
+			}
+		});
+		tabs.add(opt);
+		tabs.doLayout();
+		tabs.setActiveTab(0);
+	}
 };

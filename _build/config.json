@@ -1,0 +1,46 @@
+{
+  "name": "modDevTools",
+  "lowCaseName": "moddevtools",
+  "description": "Rapid site development helper for MODx Revolution",
+  "author": "argnist",
+  "version": "1.1.0",
+  "package": {
+    "menus": [
+      {
+        "text": "moddevtools",
+        "description": "moddevtools_menu_desc",
+        "action": "home",
+        "permissions": "view_chunk,view_template"
+      }
+    ],
+    "elements": {
+      "plugins": [
+        {
+          "name": "modDevTools",
+          "file": "plugin.moddevtools.php",
+          "events": [
+            "OnTempFormPrerender",
+            "OnDocFormPrerender",
+            "OnChunkFormPrerender",
+            "OnSnipFormPrerender",
+            "OnTempFormSave",
+            "OnDocFormSave",
+            "OnChunkFormSave"
+          ]
+        }
+      ]
+    }
+  },
+  "database": {
+    "tables": [
+      "modDevToolsLink"
+    ]
+  },
+  "build": {
+    "resolver": {
+      "after": [
+        "moddevtools.regenerate_tables.php"
+      ]
+    }
+  }
+}

@@ -13,7 +13,7 @@ modDevTools.BreadcrumbsPanel = function(config) {
         bodyStyle: {background: 'transparent'}
     });
     modDevTools.BreadcrumbsPanel.superclass.constructor.call(this,config);
-}
+};
 
 Ext.extend(modDevTools.BreadcrumbsPanel,MODx.BreadcrumbsPanel,{
     onClick: function(e) {

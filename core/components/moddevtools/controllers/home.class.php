@@ -3,9 +3,12 @@
  * The home manager controller for modDevTools.
  *
  */
-class modDevToolsHomeManagerController extends modDevToolsMainController {
-    /* @var modDevTools $modDevTools */
-    public $modDevTools;
+require_once dirname(__FILE__) . '/index.class.php';
+
+/**
+ * Class modDevToolsHomeManagerController
+ */
+class modDevToolsHomeManagerController extends modDevToolsBaseManagerController {
     /**
      * @param array $scriptProperties
      */
@@ -21,10 +24,11 @@ class modDevToolsHomeManagerController extends modDevToolsMainController {
      * @return void
      */
     public function loadCustomCssJs() {
-        $this->addCss($this->modDevTools->config['cssUrl'] . 'mgr/main.css');
-        $this->addCss($this->modDevTools->config['cssUrl'] . 'mgr/bootstrap.buttons.css');
+        parent::loadCustomCssJs();
+
         $this->addJavascript($this->modDevTools->config['jsUrl'] . 'mgr/misc/utils.js');
         $this->addJavascript($this->modDevTools->config['jsUrl'] . 'mgr/widgets/search.form.js');
+        $this->addJavascript($this->modDevTools->config['jsUrl'] . 'mgr/widgets/regenerate.form.js');
         $this->addJavascript($this->modDevTools->config['jsUrl'] . 'mgr/widgets/home.panel.js');
         $this->addJavascript($this->modDevTools->config['jsUrl'] . 'mgr/sections/home.js');
 
@@ -41,7 +45,12 @@ class modDevToolsHomeManagerController extends modDevToolsMainController {
         return $this->modDevTools->config['templatesPath'] . 'home.tpl';
     }
 
+    /**
+     * @return bool
+     */
     public function checkPermissions() {
         return $this->modx->hasPermission('view_chunk') && $this->modx->hasPermission('view_template');
     }
 }
+
+return 'modDevToolsHomeManagerController';

@@ -1,11 +1,19 @@
 <?php
 
+/**
+ * Class modDevToolsSearchProcessor
+ */
 class modDevToolsSearchProcessor extends modProcessor {
     public $map = array(
-        'modChunk' => array('name' => 'name', 'content' => 'snippet'),
-        'modTemplate' => array('name' => 'templatename', 'content' => 'content'),
+        'modChunk' => array('name' => 'name', 'content' => 'snippet', 'type' => 'chunk'),
+        'modTemplate' => array('name' => 'templatename', 'content' => 'content', 'type' => 'template')
     );
 
+    /**
+     * Run the processor and return the result.
+     *
+     * @return mixed
+     */
     public function process() {
         $data = array();
         $filters = $this->getProperty('filters');
@@ -18,10 +26,14 @@ class modDevToolsSearchProcessor extends modProcessor {
         return $this->outputArray($data);
     }
 
+    /**
+     * @param $class
+     * @return array
+     */
     public function getElements($class) {
         $data = array();
         $search = $this->getProperty('search-string');
-        $c = $this->modx->newQuery($class, array($this->map[$class]['content'] . ':LIKE' => '%' . $search . '%'));
+        $c = $this->modx->newQuery($class, array($this->map[$class]['content'] . ':LIKE BINARY' => '%' . $search . '%'));
         $elements = $this->modx->getIterator($class, $c);
         /**
          * @var modElement $element
@@ -33,6 +45,7 @@ class modDevToolsSearchProcessor extends modProcessor {
                 'name' => $object[$this->map[$class]['name']],
                 'class' => $class,
                 'content' => $this->modx->moddevtools->getSearchContent($object['content'], $search),
+                'type' => $this->map[$class]['type'],
                 'offset' => 0
             );
         }

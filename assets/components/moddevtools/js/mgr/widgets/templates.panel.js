@@ -5,7 +5,7 @@ modDevTools.panel.Templates = function(config) {
         params: {
             action: 'mgr/template/getlist',
             child: MODx.request.id,
-            link_type: config.ownerCt.link_type
+            link_type: config.link_type
         },
         config: {
             element: 'template',
@@ -18,13 +18,9 @@ modDevTools.panel.Templates = function(config) {
 };
 
 Ext.extend(modDevTools.panel.Templates,modDevTools.panel.Elements, {
-    getIntro: function() {
-        return '<p>' + _('moddevtools_templates_intro') + '</p>';
-    },
-
     getUpdateParams: function(input) {
         return {
-            action: modDevTools.modx23 ? 'element/' + this.config.config.element + '/update' : 'update',
+            action: 'element/' + this.config.config.element + '/update',
             id: input.record.id,
             templatename: input.record.name,
             content: input.getValue()
@@ -35,7 +31,7 @@ Ext.extend(modDevTools.panel.Templates,modDevTools.panel.Elements, {
         return r.snippet || '';
     },
 
-    loadProperties: function(r) {
+    loadProperties: function() {
         return false;
     }
 });

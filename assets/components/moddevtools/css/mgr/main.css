@@ -1,48 +1,17 @@
-.x-grid3-col-actions {
-	padding: 3px 0 3px 5px;
-}
-
-ul.moddevtools-row-actions {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
 ul.moddevtools-row-actions li {
 	float: left;
+	margin-right: 4px;
+	font-size: 1.2em;
 }
 
-ul.moddevtools-row-actions .btn {
-	padding: 5px;
-	margin-right: 2px;
-	min-width: 26px;
-	font-size: inherit;
+ul.moddevtools-row-actions a {
+	color: #53595f !important;
 }
 
-.moddevtools-grid-row-disabled {
+.moddevtools-row-disabled {
 	font-style: italic;
 	opacity: .6;
 	color: #555;
-}
-
-.action-red {
-	color: darkred !important;
-}
-
-.action-green {
-	color: darkgreen !important;
-}
-
-.action-blue {
-	color: cadetblue !important;
-}
-
-.action-yellow {
-	color: goldenrod !important;
-}
-
-.action-gray {
-	color: dimgray !important;
 }
 
 a.x-menu-item .x-menu-item-text, a.x-menu-item .x-menu-item-text .icon {
@@ -71,21 +40,40 @@ a.x-menu-item .x-menu-item-text .icon {
     background: yellow;
 }
 
-.devtools-el-header {
+.moddevtools-el-header {
     background-color: #ececec;
     padding: 10px;
     margin: 10px 0 0 0;
 }
 
-.devtools-search-code {
-    border: 1px solid #ececec;
-    padding: 10px;
-    margin: 0 0 10px 0;
+.moddevtools-search-code {
+	border: 1px solid #ececec;
+	padding: 10px;
+	margin: 0 0 10px 0;
+	overflow-x: scroll;
 }
 
-/* fix for modx-2.2 */
-table.x-btn {
-    float: left;
+.x-panel-bbar .x-toolbar .x-btn {
+	margin-right: 1px;
+}
+
+.moddevtools-element .x-toolbar {
+	background-color: transparent;
+	border: 0;
+	overflow: hidden;
+	padding: 2px 0;
+}
+
+.moddevtools-fieldset .x-fieldset-body {
+	padding: 5px 10px 10px !important;
+}
+
+.tools-item {
+	margin-bottom: 10px
+}
+
+.tools-item:last-child {
+	margin-bottom: 0
 }
 
 @media screen and (max-width: 1024px) {
@@ -98,7 +86,3 @@ table.x-btn {
         margin-left: 0;
     }
 }
-/*
-ul.moddevtools-row-actions .actions-menu {width: 40px;}
-ul.moddevtools-row-actions .actions-menu:after {content: " \f107";}
-*/

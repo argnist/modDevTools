@@ -1,5 +1,14 @@
 Changelog for modDevTools.
 
+modDevTools 1.1.0-pl
+====================
+Edit and Quick Chunks/Templates from modDevTools CMP directly
+Regenerate the chunks, templates and snippets usage link database in the CMP
+Improved ExtJS display
+Updated manager style
+Search in CMP is case sensitive
+Dropped Revo 2.2 compatibility
+
 modDevTools 1.0.0-pl
 ==============
 Список ресурсов на странице редактирования сниппета, содержащих вывод данного сниппета // Resource list on Snippet update page

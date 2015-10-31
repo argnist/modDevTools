@@ -25,7 +25,17 @@ modDevTools.panel.Home = function (config) {
                 },{
                     xtype: 'moddevtools-search-form'
                 }]
-            }]
+            }, ((modDevTools.config.accessRegenerate) ? {
+                title: _('moddevtools_regenerate'),
+                layout: 'anchor',
+                items: [{
+                    html: _('moddevtools_regenerate_desc'),
+                    border: false,
+                    bodyCssClass: 'panel-desc'
+                }, {
+                    xtype: 'moddevtools-regenerate-form'
+                }]
+            } : {})]
         }]
     });
     modDevTools.panel.Home.superclass.constructor.call(this, config);

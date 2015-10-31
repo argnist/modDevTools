@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * Class modDevToolsResourceChangeTemplateProcessor
+ */
 class modDevToolsResourceChangeTemplateProcessor extends modObjectUpdateProcessor {
     public $objectType = 'resource';
     public $classKey = 'modResource';
     public $permission = 'save_document';
     public $languageTopics = array('resource');
 
+    /**
+     * @return boolean
+     */
     public function beforeSave() {
         if (!$this->checkPermissions()) {
             return $this->modx->lexicon('access_denied');
