@@ -101,12 +101,12 @@ class modDevTools {
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/moddevtools.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/misc/utils.js');
 
-        $this->modx->controller->addHtml('
-            <script type="text/javascript">
+        $this->modx->controller->addHtml("
+            <script type=\"text/javascript\">
             // <![CDATA[
-			modDevTools.config = ' . $this->modx->toJSON($this->config) . ';
+			modDevTools.config = " . $this->modx->toJSON($this->config) . ";
             // ]]>
-            </script>');
+            </script>");
 
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/elements.panel.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/chunks.panel.js');
@@ -165,7 +165,7 @@ class modDevTools {
     public function outputChunkTab() {
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.panel.js');
         $this->modx->controller->addHtml("
-            script>
+            <script>
                 Ext.onReady(function() {
                     " . ($this->config['viewTemplate'] ? "modDevTools.utils.addTab('modx-chunk-tabs',{
                         title: _('templates'),
