@@ -699,7 +699,7 @@ class modDevTools {
                 $this->config['highlightCount'] = 0;
                 $separation = ($extracts[$i]['etcRight'] != '') ? $this->config['extractSeparator'] : '';
 
-                $extract = mb_substr($text, $extracts[$i]['left'], $extracts[$i]['right'] - $extracts[$i]['left'] + 1);
+                $extract = htmlspecialchars(mb_substr($text, $extracts[$i]['left'], $extracts[$i]['right'] - $extracts[$i]['left'] + 1));
                 $extract = preg_replace_callback($pattern, array($this, 'highlight'), $extract);
 
                 $output .= $extracts[$i]['etcLeft'] . $extract . $extracts[$i]['etcRight'] . $separation;
