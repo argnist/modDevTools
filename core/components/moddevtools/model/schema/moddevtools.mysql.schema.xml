@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="moddevtools" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="moddevtools" version="1.1">
+<model package="moddevtools" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="moddevtools" phpdoc-subpackage="model" version="1.1">
 	<object class="modDevToolsLink" table="moddevtools_link" extends="xPDOSimpleObject">
 		<field key="parent" dbtype="int" precision="32" phptype="integer" null="false" default="" />
 		<field key="child" dbtype="int" precision="32" phptype="integer" null="false" default="" />
