@@ -1,6 +1,6 @@
 <?php
 /**
- * @var modx $modx
+ * @var modX $modx
  */
 
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/config.core.php';

@@ -13,7 +13,7 @@
  */
 
 /**
- * @var modx $modx
+ * @var modX $modx
  * @var array $scriptProperties
  * @var modResource $resource
  * @var modTemplate $template
