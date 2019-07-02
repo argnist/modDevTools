@@ -3,7 +3,7 @@
   "lowCaseName": "moddevtools",
   "description": "Rapid site development helper for MODx Revolution",
   "author": "Vitaly Kireev",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "package": {
     "menus": [
       {

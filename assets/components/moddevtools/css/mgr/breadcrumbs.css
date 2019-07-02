@@ -1,0 +1,11 @@
+#resource-breadcrumbs .crumb_wrapper .crumbs li.first:before {
+    left: -15px;
+}
+
+#resource-breadcrumbs .crumb_wrapper .crumbs li.first .root {
+    padding-left: 45px;
+    padding-right: 15px;
+    text-align: left;
+    text-indent: 0;
+    width: auto;
+}

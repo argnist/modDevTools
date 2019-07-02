@@ -509,7 +509,7 @@ class modDevTools {
 
         $crumbs = array();
         $root = $this->modx->toJSON(array(
-            'text' => $context,
+            'text' => '(' . $context . ')',
             'className' => 'first',
             'root' => true,
             'url' => '?'
@@ -567,6 +567,7 @@ class modDevTools {
 
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/moddevtools.js');
         $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/breadcrumbs.panel.js');
+        $this->modx->controller->addCss($this->config['cssUrl'] . 'mgr/breadcrumbs.css');
         $this->modx->controller->addHtml("<script>
             Ext.onReady(function() {
                 var header = Ext.getCmp('modx-resource-header').ownerCt;
