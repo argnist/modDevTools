@@ -1,6 +1,9 @@
 Changelog for modDevTools
 =========================
 
+- 1.1.1
+    - Show context key in breadcrumb home
+
 - 1.1.0
     - Edit and Quick Chunks/Templates from modDevTools CMP directly
     - Regenerate the chunks, templates and snippets usage link database in the CMP
