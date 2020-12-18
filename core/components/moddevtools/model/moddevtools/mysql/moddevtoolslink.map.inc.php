@@ -1,9 +1,16 @@
 <?php
+/**
+ * @package moddevtools
+ */
 $xpdo_meta_map['modDevToolsLink']= array (
   'package' => 'moddevtools',
   'version' => '1.1',
   'table' => 'moddevtools_link',
   'extends' => 'xPDOSimpleObject',
+  'tableMeta' => 
+  array (
+    'engine' => 'InnoDB',
+  ),
   'fields' => 
   array (
     'parent' => 0,
@@ -50,16 +57,19 @@ $xpdo_meta_map['modDevToolsLink']= array (
         'parent' => 
         array (
           'length' => '',
+          'collation' => 'A',
           'null' => false,
         ),
         'child' => 
         array (
           'length' => '',
+          'collation' => 'A',
           'null' => false,
         ),
         'link_type' => 
         array (
           'length' => '',
+          'collation' => 'A',
           'null' => false,
         ),
       ),
