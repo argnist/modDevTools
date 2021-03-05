@@ -17,7 +17,7 @@ class modDevToolsHomeManagerController extends modExtraManagerController
     public function initialize()
     {
         $path = $this->modx->getOption('moddevtools.core_path', null, $this->modx->getOption('core_path') . 'components/moddevtools/');
-        $this->moddevtools = $this->modx->getService('moddevtools', 'modDevTools', $path . '/model/moddevtools/', array(
+        $this->moddevtools = $this->modx->getService('moddevtools', 'modDevTools', $path . 'model/moddevtools/', array(
             'core_path' => $path
         ));
 
