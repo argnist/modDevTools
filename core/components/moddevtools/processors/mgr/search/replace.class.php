@@ -1,11 +1,19 @@
 <?php
 
 include_once MODX_CORE_PATH . 'model/modx/processors/element/update.class.php';
+
+/**
+ * Class modDevToolsReplaceProcessor
+ */
 class modDevToolsReplaceProcessor extends modElementUpdateProcessor {
 
     public $nameField = 'name';
     public $contentField = 'content';
 
+    /**
+     * Run the processor, returning a modProcessorResponse object.
+     * @return modProcessorResponse
+     */
     public function run() {
         $this->classKey = $this->getProperty('class');
         switch ($this->classKey) {
@@ -25,6 +33,9 @@ class modDevToolsReplaceProcessor extends modElementUpdateProcessor {
         return parent::run();
     }
 
+    /**
+     * @return boolean
+     */
     public function beforeSet() {
         $props = $this->getProperties();
 
@@ -54,6 +65,9 @@ class modDevToolsReplaceProcessor extends modElementUpdateProcessor {
         return parent::beforeSet();
     }
 
+    /**
+     * @return array|string
+     */
     public function cleanup() {
         $object = array(
             'id' => $this->object->get('id'),

@@ -1,72 +1,56 @@
 <?php
 /**
- * Build the setup options form.
+ * Setup options
+ *
+ * @package moddevtools
+ * @subpackage build
+ *
+ * @var array $options
  */
-$exists = $chunks = false;
-$output = null;
+
+$output = '<style type="text/css">
+    #modx-setupoptions-panel { display: none; }
+    #modx-setupoptions-form p { margin-bottom: 10px; }
+    #modx-setupoptions-form h2 { margin-bottom: 15px; }
+</style>';
+
+$values = array();
 switch ($options[xPDOTransport::PACKAGE_ACTION]) {
-	case xPDOTransport::ACTION_INSTALL:
-		//$exists = $modx->getObject('transport.modTransportPackage', array('package_name' => 'pdoTools'));
-		break;
+    case xPDOTransport::ACTION_INSTALL:
+        $output .= '<h2>Install modDevTools</h2>
 
-	case xPDOTransport::ACTION_UPGRADE:
-		//$exists = $modx->getObject('transport.modTransportPackage', array('package_name' => 'pdoTools'));
-		if (!empty($options['attributes']['chunks'])) {
-			$chunks = '<ul id="formCheckboxes" style="height:200px;overflow:auto;">';
-			foreach ($options['attributes']['chunks'] as $k => $v) {
-				$chunks .= '
-				<li>
-					<label>
-						<input type="checkbox" name="update_chunks[]" value="'.$k.'"> '.$k.'
-					</label>
-				</li>';
-			}
-			$chunks .= '</ul>';
-		}
-		break;
+        <p>Thanks for installing modDevTools. This open source extra was
+        developped further by Treehill Studio - MODX development in 
+        Münsterland.</p>
 
-	case xPDOTransport::ACTION_UNINSTALL: break;
-}
+        <p>During the installation, we will collect some statistical data (the
+        hostname, the IP address, the PHP version and the MODX version of your
+        MODX installation). Your data will be kept confidential and under no
+        circumstances be used for promotional purposes or disclosed to third
+        parties.</p>
+        
+        <p>If you install this package, you are giving us your permission to
+        collect, process and use that data for statistical purposes.</p>';
 
-$output = '';
-/*
-if (!$exists) {
-	switch ($modx->getOption('manager_language')) {
-		case 'ru':
-			$output = 'Этот компонент требует <b>pdoTools</b> для быстрой работы сниппетов.<br/>Он будет автоматически скачан и установлен.';
-			break;
-		default:
-			$output = 'This component requires <b>pdoTools</b> for fast work of snippets.<br/><br/>It will be automaticly downloaded and installed?';
-	}
-}
-*/
+        break;
+    case xPDOTransport::ACTION_UPGRADE:
+        $output .= '<h2>Upgrade modDevTools</h2>
 
-if ($chunks) {
-	/*
-	if (!$exists) {
-		$output .= '<br/><br/>';
-	}
-	*/
+        <p>modDevTools will be upgraded. This open source extra was developped 
+        further by Treehill Studio - MODX development in Münsterland.</p>
 
-	switch ($modx->getOption('manager_language')) {
-		case 'ru':
-			$output .= 'Выберите чанки, которые нужно <b>перезаписать</b>:<br/>
-				<small>
-					<a href="#" onclick="Ext.get(\'formCheckboxes\').select(\'input\').each(function(v) {v.dom.checked = true;});">отметить все</a> |
-					<a href="#" onclick="Ext.get(\'formCheckboxes\').select(\'input\').each(function(v) {v.dom.checked = false;});">cнять отметки</a>
-				</small>
-			';
-			break;
-		default:
-			$output .= 'Select chunks, which need to <b>overwrite</b>:<br/>
-				<small>
-					<a href="#" onclick="Ext.get(\'formCheckboxes\').select(\'input\').each(function(v) {v.dom.checked = true;});">select all</a> |
-					<a href="#" onclick="Ext.get(\'formCheckboxes\').select(\'input\').each(function(v) {v.dom.checked = false;});">deselect all</a>
-				</small>
-			';
-	}
+        During the upgrade, we will collect some statistical data (the hostname,
+        the IP address, the PHP version, the MODX version of your MODX
+        installation and the previous installed version of this extra package).
+        Your data will be kept confidential and under no circumstances be used
+        for promotional purposes or disclosed to third parties.</p>
 
-	$output .= $chunks;
+        <p>If you upgrade this package, you are giving us your permission to
+        collect, process and use that data for statistical purposes.</p>';
+
+        break;
+    case xPDOTransport::ACTION_UNINSTALL:
+        break;
 }
 
 return $output;
