@@ -46,7 +46,7 @@ class modDevToolsHomeManagerController extends modExtraManagerController
         }
         $this->addHtml('<script type="text/javascript">
             Ext.onReady(function() {
-                modDevTools.config = ' . json_encode($this->moddevtools->config, JSON_PRETTY_PRINT) . ';
+                modDevTools.config = ' . json_encode($this->moddevtools->config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . ';
                 MODx.load({xtype: "moddevtools-page-home"});
             });
         </script>');
