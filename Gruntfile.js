@@ -44,6 +44,7 @@ module.exports = function (grunt) {
                     'source/js/mgr/widgets/elements.panel.js',
                     'source/js/mgr/widgets/chunks.panel.js',
                     'source/js/mgr/widgets/snippets.panel.js',
+                    'source/js/mgr/widgets/templates.panel.js',
                     'source/js/mgr/widgets/resources.grid.js',
                     'source/js/mgr/sections/home.js'
                 ],

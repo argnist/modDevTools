@@ -18,7 +18,7 @@ class modDevTools
     public $namespace = 'moddevtools';
 
     /** @var string $version */
-    public $version = '1.1.3';
+    public $version = '1.1.4';
 
     /**
      * @param modX $modx
@@ -124,6 +124,7 @@ class modDevTools
             $this->modx->controller->addJavascript($jsSourceUrl . 'widgets/elements.panel.js?v=v' . $this->version);
             $this->modx->controller->addJavascript($jsSourceUrl . 'widgets/chunks.panel.js?v=v' . $this->version);
             $this->modx->controller->addJavascript($jsSourceUrl . 'widgets/snippets.panel.js?v=v' . $this->version);
+            $this->modx->controller->addJavascript($jsSourceUrl . 'widgets/templates.panel.js?v=v' . $this->version);
             $this->modx->controller->addJavascript($jsSourceUrl . 'widgets/resources.grid.js?v=v' . $this->version);
         } else {
             $this->modx->controller->addCss($cssUrl . 'moddevtools.min.css?v=v' . $this->version);
@@ -141,8 +142,8 @@ class modDevTools
     {
         $this->modx->controller->addHtml("
             <script>
-                Ext.onReady(function() {
-                    " . ($this->config['viewChunk'] ? "modDevTools.util.addTab('modx-template-tabs',{
+                Ext.onReady(function() {".
+                ($this->config['viewChunk'] ? "modDevTools.util.addTab('modx-template-tabs',{
                         title: _('chunks'),
                         id: 'moddevtools-template-chunks-tab',
                         width: '100%',
@@ -188,7 +189,7 @@ class modDevTools
 
     public function outputChunkTab()
     {
-        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.panel.js');
+//        $this->modx->controller->addJavascript($this->config['jsUrl'] . 'mgr/widgets/templates.panel.js');
         $this->modx->controller->addHtml("
             <script>
                 Ext.onReady(function() {

@@ -45,7 +45,8 @@ class modDevToolsResourceGetListProcessor extends modResourceGetListProcessor{
 	 * @return xPDOQuery
 	 */
 	public function prepareQueryBeforeCount(xPDOQuery $c) {
-        if ($linkType = $this->getProperty('link_type', false)) {
+        $linkType = $this->getProperty('link_type', false);
+        if ($linkType === 'res-chunk' || $linkType === 'res-snip') {
             $templates = array();
             $resources = array();
 
