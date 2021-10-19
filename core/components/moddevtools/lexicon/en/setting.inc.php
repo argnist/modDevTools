@@ -1,6 +1,6 @@
 <?php
 /**
- * Setting Lexicon Entries for ConsentFriend
+ * Setting Lexicon Entries for modDevTools
  *
  * @package moddevtools
  * @subpackage lexicon
