@@ -20,7 +20,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         $output .= '<h2>Install modDevTools</h2>
 
         <p>Thanks for installing modDevTools. This open source extra was
-        developped further by Treehill Studio - MODX development in 
+        developed further by Treehill Studio - MODX development in 
         Münsterland.</p>
 
         <p>During the installation, we will collect some statistical data (the
@@ -36,7 +36,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_UPGRADE:
         $output .= '<h2>Upgrade modDevTools</h2>
 
-        <p>modDevTools will be upgraded. This open source extra was developped 
+        <p>modDevTools will be upgraded. This open source extra was developed 
         further by Treehill Studio - MODX development in Münsterland.</p>
 
         During the upgrade, we will collect some statistical data (the hostname,
